@@ -74,7 +74,7 @@ export default function AgeStep() {
     <div className="flex flex-col gap-4">
       <h2 className="text-2xl font-semibold">How old are you?</h2>
       <p className="text-sm text-gray-500">
-        Select your date of birth to calculate your age. You must be at least 13
+        Select your date of birth to calculate your age. You must be at least 18
         to create an account.
       </p>
       <div className="relative flex flex-col gap-2" ref={containerRef}>
@@ -83,9 +83,8 @@ export default function AgeStep() {
           onClick={() => setIsOpen((open) => !open)}
           aria-haspopup="dialog"
           aria-expanded={isOpen}
-          className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${
-            errors.dob ? "border-red-400" : "border-gray-300"
-          }`}
+          className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${errors.dob ? "border-red-400" : "border-gray-300"
+            }`}
         >
           <span className={age !== null ? "text-gray-900" : "text-gray-400"}>
             {age !== null ? age : "Enter your age"}
@@ -95,9 +94,8 @@ export default function AgeStep() {
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
-            className={`h-5 w-5 text-gray-400 transition-transform ${
-              isOpen ? "rotate-180" : ""
-            }`}
+            className={`h-5 w-5 text-gray-400 transition-transform ${isOpen ? "rotate-180" : ""
+              }`}
           >
             <path
               fillRule="evenodd"

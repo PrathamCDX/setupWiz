@@ -1,12 +1,29 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
-export default function OtpStep() {
+type OtpStepProps = {
+  onComplete?: () => void;
+};
+
+export default function OtpStep({ onComplete }: OtpStepProps) {
   const {
     register,
+    watch,
     formState: { errors },
   } = useFormContext();
+
+  const otp = watch("otp");
+  const firedRef = useRef(false);
+
+  useEffect(() => {
+    if (firedRef.current) return;
+    if (/^\d{6}$/.test(otp ?? "")) {
+      firedRef.current = true;
+      onComplete?.();
+    }
+  }, [otp, onComplete]);
 
   return (
     <div className="flex flex-col gap-4">
