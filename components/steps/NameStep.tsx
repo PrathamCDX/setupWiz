@@ -13,7 +13,7 @@ export default function NameStep({ showErrors }: NameStepProps) {
   } = useFormContext();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-8 my-6">
       <h2 className="text-2xl font-semibold">What&apos;s your name?</h2>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">

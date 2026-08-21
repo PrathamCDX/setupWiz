@@ -16,7 +16,7 @@ export default function PronounsStep({ showErrors }: PronounsStepProps) {
   const pronouns = watch("pronouns");
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-8 my-6">
       <h2 className="text-2xl font-semibold">Your pronouns</h2>
       <p className="text-sm text-gray-500">
         How would you like to be addressed?

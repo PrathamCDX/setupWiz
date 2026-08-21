@@ -75,13 +75,13 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-8 my-6">
       <h2 className="text-2xl font-semibold">How old are you?</h2>
       <p className="text-sm text-gray-500">
         Select your date of birth to calculate your age. You must be at least 18
         to create an account.
       </p>
-      <div className="relative flex flex-col gap-2" ref={containerRef}>
+      <div className=" flex flex-col gap-2" ref={containerRef}>
         <button
           type="button"
           onClick={() => setIsOpen((open) => !open)}
@@ -110,21 +110,24 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
         </button>
 
         {isOpen && (
-          <div
-            role="dialog"
-            aria-label="Select your date of birth"
-            className="absolute top-full left-0 z-10 mt-2 w-fit max-w-full rounded-xl border border-gray-200 bg-white p-3 shadow-lg [--rdp-accent-background-color:#eff6ff] [--rdp-accent-color:#3b82f6] [--rdp-day-width:36px] [--rdp-day_button-height:34px] [--rdp-day_button-width:34px] [--rdp-day-height:36px]"
-          >
-            <DayPicker
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleSelect}
-              startMonth={startMonth}
-              endMonth={endMonth}
-              disabled={{ after: now }}
-              captionLayout="dropdown"
-              defaultMonth={selectedDate}
-            />
+          <div className="absolute  h-full w-full top-0 left-0 backdrop-blur-md bg-black/1 z-10 flex items-center justify-center ">
+            <div
+              role="dialog"
+              aria-label="Select your date of birth"
+              className="scheme-dark rounded-xl border border-gray-200 bg-black p-3 shadow-lg [&_select]:bg-black [&_select]:text-white [&_option]:bg-black [&_option]:text-white [--rdp-accent-background-color:#eff6ff] [--rdp-accent-color:#3b82f6] [--rdp-day-width:36px] [--rdp-day_button-height:34px] [--rdp-day_button-width:34px] [--rdp-day-height:36px]"
+            >
+              <DayPicker
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleSelect}
+                startMonth={startMonth}
+                endMonth={endMonth}
+                disabled={{ after: now }}
+                captionLayout="dropdown"
+                defaultMonth={selectedDate}
+                className="bg-black text-white"
+              />
+            </div>
           </div>
         )}
 

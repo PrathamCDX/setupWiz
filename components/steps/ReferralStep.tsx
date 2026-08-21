@@ -13,7 +13,7 @@ export default function ReferralStep({ showErrors }: ReferralStepProps) {
   } = useFormContext();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-8 my-6">
       <h2 className="text-2xl font-semibold">Have a referral code?</h2>
       <p className="text-sm text-gray-500">Optional &mdash; you can skip this.</p>
       <div className="flex flex-col gap-1">

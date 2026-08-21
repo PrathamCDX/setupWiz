@@ -140,6 +140,7 @@ export default function SignUp() {
     const [hydrated, setHydrated] = useState(false);
     const [showErrors, setShowErrors] = useState(false);
     const mountedRef = useRef(false);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const methods = useForm<SignupFormData>({
         resolver: zodResolver(signupSchema),
@@ -180,6 +181,10 @@ export default function SignUp() {
         }
         setHydrated(true);
     }, [methods]);
+
+    useEffect(() => {
+        contentRef.current?.querySelector<HTMLElement>("input")?.focus();
+    }, [step]);
 
     const goToStep = useCallback(
         (target: number) => {
@@ -249,34 +254,17 @@ export default function SignUp() {
     const StepComponent = STEPS[step].component;
 
     return (
-        <div className="flex h-full flex-col">
-            {/* Step indicator */}
-            <div className="flex items-center justify-between px-8 pt-6 pb-2">
-                <span className="text-sm text-gray-400">
-                    Step {step + 1} of {STEPS.length}
-                </span>
-                <span className="text-sm font-medium text-gray-600">
-                    {STEPS[step].label}
-                </span>
-            </div>
-
-            {/* Progress bar */}
-            <div className="mx-8 h-1 overflow-hidden rounded-full bg-gray-200">
-                <div
-                    className="h-full rounded-full bg-blue-500 transition-all duration-300"
-                    style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-                />
-            </div>
+        <div className="relative h-full grid grid-rows-2 ">
 
             {/* Step content */}
-            <div className="relative flex flex-1 overflow-hidden px-8 py-6">
+            <div ref={contentRef} className=" flex flex-1 overflow-hidden">
                 <FormProvider {...methods}>
                     <div
                         className={`w-full transition-all duration-200 ease-in-out ${isAnimating
                             ? direction === "forward"
                                 ? "translate-x-8 opacity-0"
                                 : "-translate-x-8 opacity-0"
-                            : "translate-x-0 opacity-100"
+                            : "opacity-100"
                             }`}
                     >
                         <StepComponent onComplete={handleNext} showErrors={showErrors} />
@@ -285,24 +273,24 @@ export default function SignUp() {
             </div>
 
             {/* Navigation buttons */}
-            <div className="flex items-center justify-between border-t border-gray-200 px-8 py-4">
+            <div className="flex flex-col items-center justify-end gap-y-4 px-8 py-4">
+                <button
+                    type="button"
+                    onClick={handleNext}
+                    className="rounded-lg w-8/10 border border-white/10px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-900/20"
+                >
+                    {step === STEPS.length - 1 ? "Submit" : "Next"}
+                </button>
                 <button
                     type="button"
                     onClick={handleBack}
                     disabled={!canGoBack(step)}
-                    className={`rounded-lg px-6 py-2.5 text-sm font-medium transition-colors ${!canGoBack(step)
+                    className={`rounded-lg border border-white/10 w-8/10 px-6 py-2.5 text-sm font-medium transition-colors ${!canGoBack(step)
                         ? "cursor-not-allowed text-gray-300"
                         : "text-gray-600 hover:bg-gray-100"
                         }`}
                 >
                     Back
-                </button>
-                <button
-                    type="button"
-                    onClick={handleNext}
-                    className="rounded-lg bg-blue-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600"
-                >
-                    {step === STEPS.length - 1 ? "Submit" : "Next"}
                 </button>
             </div>
         </div>

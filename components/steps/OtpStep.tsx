@@ -27,7 +27,7 @@ export default function OtpStep({ onComplete, showErrors }: OtpStepProps) {
   }, [otp, onComplete]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-8 my-6">
       <h2 className="text-2xl font-semibold">Verify your email</h2>
       <p className="text-sm text-gray-500">
         Enter the 6-digit code sent to your email.
