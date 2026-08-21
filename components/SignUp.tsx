@@ -7,9 +7,11 @@ import { z } from "zod";
 
 import EmailStep from "@/components/steps/EmailStep";
 import OtpStep from "@/components/steps/OtpStep";
+import UsernameStep from "@/components/steps/UsernameStep";
 import NameStep from "@/components/steps/NameStep";
 import AgeStep from "@/components/steps/AgeStep";
 import PronounsStep from "@/components/steps/PronounsStep";
+import ReferralStep from "@/components/steps/ReferralStep";
 
 const STORAGE_KEY = "signup-wizard-data";
 
@@ -33,11 +35,23 @@ const signupSchema = z
             .string()
             .length(6, "Must be 6 digits")
             .regex(/^\d{6}$/, "Must be 6 digits"),
+        username: z
+            .string()
+            .min(1, "Username is required")
+            .regex(
+                /^[a-zA-Z0-9_]{3,20}$/,
+                "3\u201320 characters; letters, numbers and _ only"
+            ),
         firstName: z.string().min(3, "First name must be atleast 3 characters long"),
         lastName: z.string().min(3, "Last name must be atleast 3 characters long"),
         dob: z.string().min(1, "Date of birth is required"),
         pronouns: z.string().min(1, "Please select pronouns"),
         customPronouns: z.string().optional(),
+        referralCode: z
+            .string()
+            .regex(/^[a-zA-Z0-9]{4,16}$/, "4\u201316 letters or numbers")
+            .optional()
+            .or(z.literal("")),
     })
     .refine(
         (data) =>
@@ -59,31 +73,37 @@ type SignupFormData = z.infer<typeof signupSchema>;
 const stepFields: Record<number, (keyof SignupFormData)[]> = {
     0: ["email"],
     1: ["otp"],
-    2: ["firstName", "lastName"],
-    3: ["dob"],
-    4: ["pronouns", "customPronouns"],
+    2: ["username"],
+    3: ["firstName", "lastName"],
+    4: ["dob"],
+    5: ["pronouns", "customPronouns"],
+    6: ["referralCode"],
 };
 
 const STORAGE_FIELDS: (keyof SignupFormData)[] = [
     "email",
+    "username",
     "firstName",
     "lastName",
     "dob",
     "pronouns",
     "customPronouns",
+    "referralCode",
 ];
 
 const STEPS = [
     { component: EmailStep, label: "Email" },
     { component: OtpStep, label: "Verification" },
+    { component: UsernameStep, label: "Username" },
     { component: NameStep, label: "Name" },
     { component: AgeStep, label: "Date of Birth" },
     { component: PronounsStep, label: "Pronouns" },
+    { component: ReferralStep, label: "Referral" },
 ];
 
 // Steps 0-1 form the Account section (Email, OTP); steps 2+ form the Profile
-// section (Name, Date of Birth, Pronouns). Back navigation cannot cross the
-// section boundary.
+// section (Username, Name, Date of Birth, Pronouns, Referral). Back navigation
+// cannot cross the section boundary.
 const SECTION_BOUNDARY = 2;
 
 function canGoBack(step: number): boolean {
@@ -125,13 +145,17 @@ export default function SignUp() {
         defaultValues: {
             email: "",
             otp: "",
+            username: "",
             firstName: "",
             lastName: "",
             dob: "",
             pronouns: "",
             customPronouns: "",
+            referralCode: "",
         },
         mode: "onTouched",
+        reValidateMode: "onChange",
+
     });
 
     // Hydrate from localStorage on mount
@@ -143,11 +167,13 @@ export default function SignUp() {
             methods.reset({
                 email: "",
                 otp: "",
+                username: "",
                 firstName: "",
                 lastName: "",
                 dob: "",
                 pronouns: "",
                 customPronouns: "",
+                referralCode: "",
                 ...stored,
             });
         }
@@ -177,11 +203,13 @@ export default function SignUp() {
             methods.reset({
                 email: "",
                 otp: "",
+                username: "",
                 firstName: "",
                 lastName: "",
                 dob: "",
                 pronouns: "",
                 customPronouns: "",
+                referralCode: "",
             });
             setCompleted(true);
             return;
