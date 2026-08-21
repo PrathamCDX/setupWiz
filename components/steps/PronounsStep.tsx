@@ -2,7 +2,11 @@
 
 import { useFormContext } from "react-hook-form";
 
-export default function PronounsStep() {
+type PronounsStepProps = {
+  showErrors?: boolean;
+};
+
+export default function PronounsStep({ showErrors }: PronounsStepProps) {
   const {
     register,
     watch,
@@ -30,7 +34,7 @@ export default function PronounsStep() {
             <option value="prefer-not">Prefer not to say</option>
             <option value="custom">Custom</option>
           </select>
-          {errors.pronouns && (
+          {showErrors && errors.pronouns && (
             <p className="text-sm text-red-500">
               {errors.pronouns.message as string}
             </p>
@@ -44,7 +48,7 @@ export default function PronounsStep() {
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               {...register("customPronouns")}
             />
-            {errors.customPronouns && (
+            {showErrors && errors.customPronouns && (
               <p className="text-sm text-red-500">
                 {errors.customPronouns.message as string}
               </p>

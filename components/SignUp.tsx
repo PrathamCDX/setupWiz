@@ -138,6 +138,7 @@ export default function SignUp() {
     const [isAnimating, setIsAnimating] = useState(false);
     const [completed, setCompleted] = useState(false);
     const [hydrated, setHydrated] = useState(false);
+    const [showErrors, setShowErrors] = useState(false);
     const mountedRef = useRef(false);
 
     const methods = useForm<SignupFormData>({
@@ -153,7 +154,7 @@ export default function SignUp() {
             customPronouns: "",
             referralCode: "",
         },
-        mode: "onTouched",
+        mode: "onChange",
         reValidateMode: "onChange",
 
     });
@@ -187,6 +188,7 @@ export default function SignUp() {
             setIsAnimating(true);
             setTimeout(() => {
                 setStep(target);
+                setShowErrors(false);
                 setIsAnimating(false);
             }, 200);
         },
@@ -194,6 +196,7 @@ export default function SignUp() {
     );
 
     const handleNext = async () => {
+        setShowErrors(true);
         const fields = stepFields[step];
         const valid = await methods.trigger(fields);
         if (!valid) return;
@@ -214,6 +217,8 @@ export default function SignUp() {
             setCompleted(true);
             return;
         }
+
+
 
         const data = methods.getValues();
         saveToStorage(data);
@@ -274,7 +279,7 @@ export default function SignUp() {
                             : "translate-x-0 opacity-100"
                             }`}
                     >
-                        <StepComponent onComplete={handleNext} />
+                        <StepComponent onComplete={handleNext} showErrors={showErrors} />
                     </div>
                 </FormProvider>
             </div>

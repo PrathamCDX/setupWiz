@@ -5,9 +5,10 @@ import { useFormContext } from "react-hook-form";
 
 type OtpStepProps = {
   onComplete?: () => void;
+  showErrors?: boolean;
 };
 
-export default function OtpStep({ onComplete }: OtpStepProps) {
+export default function OtpStep({ onComplete, showErrors }: OtpStepProps) {
   const {
     register,
     watch,
@@ -40,7 +41,7 @@ export default function OtpStep({ onComplete }: OtpStepProps) {
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-[0.5em] font-mono outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           {...register("otp")}
         />
-        {errors.otp && (
+        {showErrors && errors.otp && (
           <p className="text-sm text-red-500">
             {errors.otp.message as string}
           </p>

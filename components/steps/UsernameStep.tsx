@@ -2,7 +2,11 @@
 
 import { useFormContext } from "react-hook-form";
 
-export default function UsernameStep() {
+type UsernameStepProps = {
+  showErrors?: boolean;
+};
+
+export default function UsernameStep({ showErrors }: UsernameStepProps) {
   const {
     register,
     formState: { errors },
@@ -22,7 +26,7 @@ export default function UsernameStep() {
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           {...register("username")}
         />
-        {errors.username && (
+        {showErrors && errors.username && (
           <p className="text-sm text-red-500">
             {errors.username.message as string}
           </p>

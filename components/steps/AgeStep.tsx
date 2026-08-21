@@ -9,6 +9,10 @@ import { calculateAge } from "@/components/SignUp";
 
 const DOB_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
+type AgeStepProps = {
+  showErrors?: boolean;
+};
+
 function parseDob(value: string | undefined): Date | undefined {
   if (!value || !DOB_PATTERN.test(value)) return undefined;
   const [year, month, day] = value.split("-").map(Number);
@@ -22,7 +26,7 @@ function formatDob(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export default function AgeStep() {
+export default function AgeStep({ showErrors }: AgeStepProps) {
   const {
     watch,
     setValue,
@@ -66,7 +70,7 @@ export default function AgeStep() {
   const handleSelect = (date: Date | undefined) => {
     if (!date) return;
     setValue("dob", formatDob(date));
-    void trigger("dob");
+    if (showErrors) void trigger("dob");
     setIsOpen(false);
   };
 
@@ -124,7 +128,7 @@ export default function AgeStep() {
           </div>
         )}
 
-        {errors.dob && (
+        {showErrors && errors.dob && (
           <p className="text-sm text-red-500">
             {errors.dob.message as string}
           </p>

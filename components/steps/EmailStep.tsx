@@ -2,7 +2,11 @@
 
 import { useFormContext } from "react-hook-form";
 
-export default function EmailStep() {
+type EmailStepProps = {
+  showErrors?: boolean;
+};
+
+export default function EmailStep({ showErrors }: EmailStepProps) {
   const {
     register,
     formState: { errors },
@@ -22,7 +26,7 @@ export default function EmailStep() {
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           {...register("email")}
         />
-        {errors.email && (
+        {showErrors && errors.email && (
           <p className="text-sm text-red-500">
             {errors.email.message as string}
           </p>
