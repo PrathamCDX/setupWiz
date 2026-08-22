@@ -167,7 +167,7 @@ export default function AgeStep({
           onClick={() => (isOpen ? setIsOpen(false) : openSheet())}
           aria-haspopup="dialog"
           aria-expanded={isOpen}
-          className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${errors.dob ? "border-red-400" : "border-gray-300"
+          className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-gray-200/30 ${errors.dob ? "border-red-400" : "border-gray-100/20"
             }`}
         >
           <span className={age !== null ? "text-gray-900" : "text-gray-400"}>
@@ -243,10 +243,11 @@ export default function AgeStep({
               </div>
             </div>
             <Button
-                onClick={handleContinue}
-                disabled={!canContinue}
-                className="mx-auto mt-6 block"
-                label="Continue"
+              variant="primary"
+              onClick={handleContinue}
+              disabled={!canContinue}
+              className="mx-auto mt-6 block"
+              label="Continue"
             />
           </div>
         </div>

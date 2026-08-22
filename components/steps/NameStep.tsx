@@ -27,7 +27,7 @@ export default function NameStep({
         <input
           type="text"
           placeholder="Full name"
-          className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+          className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30"
           {...register("name")}
         />
         {showErrors && errors.name && (

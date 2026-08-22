@@ -31,14 +31,15 @@ export default function EmailStep({
         <input
           type="email"
           placeholder="EMAIL"
-          className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30 "
+          className={`w-full rounded-lg border placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30 ${errors.email ? "border-red-400" : "border-gray-100/20"
+            }`}
           {...register("email")}
         />
-        {showErrors && errors.email && (
-          <p className="text-sm text-red-500">
-            {errors.email.message as string}
-          </p>
-        )}
+        <p className="text-sm text-red-500 h-4 px-1">
+          {showErrors && errors.email && (
+            errors.email.message as string
+          )}
+        </p>
       </div>
       <label className="flex items-center gap-2 text-sm text-gray-500">
         <input

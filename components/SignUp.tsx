@@ -252,7 +252,7 @@ export default function SignUp() {
     const StepComponent = STEPS[step].component;
 
     return (
-        <div className="relative h-full grid grid-rows-2 ">
+        <div className="relative h-full  ">
 
             {/* Step content */}
             <div ref={contentRef} className=" flex-1 overflow-hidden">

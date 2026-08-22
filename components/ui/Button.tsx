@@ -15,11 +15,11 @@ const BASE_STYLES =
 
 const VARIANT_STYLES: Record<ButtonVariant, { enabled: string; disabled: string }> = {
   primary: {
-    enabled: "border-white/10 text-white hover:bg-white/10 hover:cursor-pointer",
+    enabled: "border-white/10 text-gray-800 hover:text-gray-200 bg-white hover:bg-white/10 hover:cursor-pointer",
     disabled: "border-white/5 text-gray-500 cursor-not-allowed",
   },
   secondary: {
-    enabled: "border-white/10 text-gray-600 hover:bg-gray-100 hover:cursor-pointer",
+    enabled: "border-white/10 text-white hover:text-gray-800 hover:bg-gray-100 hover:cursor-pointer",
     disabled: "border-white/10 text-gray-300 cursor-not-allowed",
   },
 };

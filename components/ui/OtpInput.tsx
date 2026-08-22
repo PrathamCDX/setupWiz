@@ -78,9 +78,8 @@ export default function OtpInput({ value, onChange, error }: OtpInputProps) {
           onChange={(event) => handleChange(index, event)}
           onKeyDown={(event) => handleKeyDown(index, event)}
           onPaste={handlePaste}
-          className={`rounded-lg border px-4 py-3 text-center text-2xl font-mono outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${
-            error ? "border-red-400" : "border-gray-300"
-          }`}
+          className={`rounded-lg border placeholder:text-gray-100/20 px-2 sm:px-4 sm:py-3 py-1 text-center text-2xl font-mono outline-none transition-colors focus:border-gray-200/30 ${error ? "border-red-400" : "border-gray-100/20"
+            }`}
         />
       ))}
     </div>
