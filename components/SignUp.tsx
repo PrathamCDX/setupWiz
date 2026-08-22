@@ -271,21 +271,21 @@ export default function SignUp() {
                         <StepComponent onComplete={handleNext} showErrors={showErrors} />
                     </div>
                 </FormProvider>
+                <div className="flex flex-col items-center justify-end gap-y-4 px-8 py-4">
+                    <Button
+                        onClick={handleNext}
+                        label={step === STEPS.length - 1 ? "Submit" : "Next"}
+                    />
+                    <Button
+                        variant="secondary"
+                        onClick={handleBack}
+                        disabled={!canGoBack(step)}
+                        label="Back"
+                    />
+                </div>
             </div>
 
             {/* Navigation buttons */}
-            <div className="flex flex-col items-center justify-end gap-y-4 px-8 py-4">
-                <Button
-                    onClick={handleNext}
-                    label={step === STEPS.length - 1 ? "Submit" : "Next"}
-                />
-                <Button
-                    variant="secondary"
-                    onClick={handleBack}
-                    disabled={!canGoBack(step)}
-                    label="Back"
-                />
-            </div>
         </div>
     );
 }

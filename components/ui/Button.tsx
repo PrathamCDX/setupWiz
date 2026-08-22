@@ -11,7 +11,7 @@ type ButtonProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const BASE_STYLES =
-  "w-8/10 rounded-lg border px-6 py-2.5 text-sm font-medium transition-colors";
+  "mx-8 w-full rounded-lg border px-6 py-2.5 text-sm font-medium transition-colors";
 
 const VARIANT_STYLES: Record<ButtonVariant, { enabled: string; disabled: string }> = {
   primary: {
