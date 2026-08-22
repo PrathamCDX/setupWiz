@@ -2,12 +2,29 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { DayPicker } from "@daypicker/react";
-import "@daypicker/react/style.css";
 
+import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
+import Button from "@/components/ui/Button";
 import { calculateAge } from "@/components/SignUp";
 
 const DOB_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+const MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const YEAR_RANGE = 120;
 
 type AgeStepProps = {
   showErrors?: boolean;
@@ -19,11 +36,11 @@ function parseDob(value: string | undefined): Date | undefined {
   return new Date(year, month - 1, day);
 }
 
-function formatDob(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+function daysInMonth(month: string, year: string): number {
+  if (!month) return 31;
+  // Default to a leap year so February allows the 29th until a year is chosen
+  const y = year ? Number(year) : 2000;
+  return new Date(y, Number(month), 0).getDate();
 }
 
 export default function AgeStep({ showErrors }: AgeStepProps) {
@@ -35,17 +52,54 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
   } = useFormContext();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [validatedOnce, setValidatedOnce] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const dob = watch("dob");
   const selectedDate = parseDob(dob);
   const age = dob ? calculateAge(dob) : null;
 
-  const now = new Date();
-  const startMonth = new Date(now.getFullYear() - 120, now.getMonth());
-  const endMonth = new Date(now.getFullYear(), now.getMonth());
+  const currentYear = new Date().getFullYear();
 
-  // Close on outside click
+  const dayOptions: DropdownOption[] = Array.from(
+    { length: daysInMonth(month, year) },
+    (_, i) => ({ value: String(i + 1), label: String(i + 1) })
+  );
+
+  const monthOptions: DropdownOption[] = MONTH_LABELS.map((label, i) => ({
+    value: String(i + 1),
+    label,
+  }));
+
+  const yearOptions: DropdownOption[] = Array.from(
+    { length: YEAR_RANGE + 1 },
+    (_, i) => {
+      const y = currentYear - i;
+      return { value: String(y), label: String(y) };
+    }
+  );
+
+  // Clamp the selected day when the month/year combination has fewer days
+  const handleMonthChange = (value: string) => {
+    setMonth(value);
+    const max = daysInMonth(value, year);
+    if (day !== "" && Number(day) > max) {
+      setDay(String(max));
+    }
+  };
+
+  const handleYearChange = (value: string) => {
+    setYear(value);
+    const max = daysInMonth(month, value);
+    if (day !== "" && Number(day) > max) {
+      setDay(String(max));
+    }
+  };
+
+  // Close on outside click / Escape
   useEffect(() => {
     if (!isOpen) return;
     function handlePointerDown(event: PointerEvent) {
@@ -67,10 +121,29 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
     };
   }, [isOpen]);
 
-  const handleSelect = (date: Date | undefined) => {
-    if (!date) return;
-    setValue("dob", formatDob(date));
-    if (showErrors) void trigger("dob");
+  const openSheet = () => {
+    if (selectedDate) {
+      setDay(String(selectedDate.getDate()));
+      setMonth(String(selectedDate.getMonth() + 1));
+      setYear(String(selectedDate.getFullYear()));
+    } else {
+      setDay("");
+      setMonth("");
+      setYear("");
+    }
+    setIsOpen(true);
+  };
+
+  const canContinue = day !== "" && month !== "" && year !== "";
+
+  const handleContinue = () => {
+    if (!canContinue) return;
+    setValue(
+      "dob",
+      `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+    );
+    setValidatedOnce(true);
+    void trigger("dob");
     setIsOpen(false);
   };
 
@@ -84,7 +157,7 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
       <div className=" flex flex-col gap-2" ref={containerRef}>
         <button
           type="button"
-          onClick={() => setIsOpen((open) => !open)}
+          onClick={() => (isOpen ? setIsOpen(false) : openSheet())}
           aria-haspopup="dialog"
           aria-expanded={isOpen}
           className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${errors.dob ? "border-red-400" : "border-gray-300"
@@ -109,29 +182,69 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
           </svg>
         </button>
 
-        {isOpen && (
-          <div className="absolute  h-full w-full top-0 left-0 backdrop-blur-md bg-black/1 z-10 flex items-center justify-center ">
-            <div
-              role="dialog"
-              aria-label="Select your date of birth"
-              className="scheme-dark rounded-xl border border-gray-200 bg-black p-3 shadow-lg [&_select]:bg-black [&_select]:text-white [&_option]:bg-black [&_option]:text-white [--rdp-accent-background-color:#eff6ff] [--rdp-accent-color:#3b82f6] [--rdp-day-width:36px] [--rdp-day_button-height:34px] [--rdp-day_button-width:34px] [--rdp-day-height:36px]"
-            >
-              <DayPicker
-                mode="single"
-                selected={selectedDate}
-                onSelect={handleSelect}
-                startMonth={startMonth}
-                endMonth={endMonth}
-                disabled={{ after: now }}
-                captionLayout="dropdown"
-                defaultMonth={selectedDate}
-                className="bg-black text-white"
-              />
+        {/* Bottom sheet */}
+        <div
+          className={`absolute  inset-0 z-10 transition-opacity duration-200 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          inert={!isOpen}
+          style={isOpen ? { display: "block" } : { display: "none" }}
+        >
+          <div
+            className="absolute inset-0 bg-black/10 backdrop-blur-md"
+            onClick={() => setIsOpen(false)}
+          />
+          <div
+            role="dialog"
+            aria-label="Select your date of birth"
+            aria-modal="true"
+            className={`absolute h-125 grid grid-rows-[1fr_auto] inset-x-0 bottom-0 rounded-t-2xl border-t border-blue-600  bg-black p-6 shadow-2xl transition-transform duration-200 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"
+              }`}
+          >
+            <div className="">
+              <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/20" />
+              <p className="mb-4 text-sm font-medium text-white">
+                Select your date of birth
+              </p>
+              <div className="grid grid-cols-3 gap-3">
+                <Dropdown
+                  variant="dark"
+                  openDirection="up"
+                  aria-label="Day"
+                  placeholder="Day"
+                  options={dayOptions}
+                  value={day}
+                  onChange={setDay}
+                />
+                <Dropdown
+                  variant="dark"
+                  openDirection="up"
+                  aria-label="Month"
+                  placeholder="Month"
+                  options={monthOptions}
+                  value={month}
+                  onChange={handleMonthChange}
+                />
+                <Dropdown
+                  variant="dark"
+                  openDirection="up"
+                  aria-label="Year"
+                  placeholder="Year"
+                  options={yearOptions}
+                  value={year}
+                  onChange={handleYearChange}
+                />
+              </div>
             </div>
+            <Button
+                onClick={handleContinue}
+                disabled={!canContinue}
+                className="mx-auto mt-6 block"
+                label="Continue"
+            />
           </div>
-        )}
+        </div>
 
-        {showErrors && errors.dob && (
+        {(showErrors || validatedOnce) && errors.dob && (
           <p className="text-sm text-red-500">
             {errors.dob.message as string}
           </p>

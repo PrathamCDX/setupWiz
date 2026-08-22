@@ -12,6 +12,9 @@ import NameStep from "@/components/steps/NameStep";
 import AgeStep from "@/components/steps/AgeStep";
 import PronounsStep from "@/components/steps/PronounsStep";
 import ReferralStep from "@/components/steps/ReferralStep";
+import Button from "@/components/ui/Button";
+import Image from "next/image";
+import SignUpHeader from "./steps/SignUpHeader";
 
 const STORAGE_KEY = "signup-wizard-data";
 
@@ -42,8 +45,7 @@ const signupSchema = z
                 /^[a-zA-Z0-9_]{3,20}$/,
                 "3\u201320 characters; letters, numbers and _ only"
             ),
-        firstName: z.string().min(3, "First name must be atleast 3 characters long"),
-        lastName: z.string().min(3, "Last name must be atleast 3 characters long"),
+        name: z.string().min(3, "Name must be at least 3 characters long"),
         dob: z.string().min(1, "Date of birth is required"),
         pronouns: z.string().min(1, "Please select pronouns"),
         customPronouns: z.string().optional(),
@@ -52,6 +54,7 @@ const signupSchema = z
             .regex(/^[a-zA-Z0-9]{4,16}$/, "4\u201316 letters or numbers")
             .optional()
             .or(z.literal("")),
+        newsletter: z.boolean(),
     })
     .refine(
         (data) =>
@@ -74,7 +77,7 @@ const stepFields: Record<number, (keyof SignupFormData)[]> = {
     0: ["email"],
     1: ["otp"],
     2: ["username"],
-    3: ["firstName", "lastName"],
+    3: ["name"],
     4: ["dob"],
     5: ["pronouns", "customPronouns"],
     6: ["referralCode"],
@@ -83,12 +86,12 @@ const stepFields: Record<number, (keyof SignupFormData)[]> = {
 const STORAGE_FIELDS: (keyof SignupFormData)[] = [
     "email",
     "username",
-    "firstName",
-    "lastName",
+    "name",
     "dob",
     "pronouns",
     "customPronouns",
     "referralCode",
+    "newsletter",
 ];
 
 const STEPS = [
@@ -101,9 +104,6 @@ const STEPS = [
     { component: ReferralStep, label: "Referral" },
 ];
 
-// Steps 0-1 form the Account section (Email, OTP); steps 2+ form the Profile
-// section (Username, Name, Date of Birth, Pronouns, Referral). Back navigation
-// cannot cross the section boundary.
 const SECTION_BOUNDARY = 2;
 
 function canGoBack(step: number): boolean {
@@ -148,12 +148,12 @@ export default function SignUp() {
             email: "",
             otp: "",
             username: "",
-            firstName: "",
-            lastName: "",
+            name: "",
             dob: "",
             pronouns: "",
             customPronouns: "",
             referralCode: "",
+            newsletter: false,
         },
         mode: "onChange",
         reValidateMode: "onChange",
@@ -170,12 +170,12 @@ export default function SignUp() {
                 email: "",
                 otp: "",
                 username: "",
-                firstName: "",
-                lastName: "",
+                name: "",
                 dob: "",
                 pronouns: "",
                 customPronouns: "",
                 referralCode: "",
+                newsletter: false,
                 ...stored,
             });
         }
@@ -212,12 +212,12 @@ export default function SignUp() {
                 email: "",
                 otp: "",
                 username: "",
-                firstName: "",
-                lastName: "",
+                name: "",
                 dob: "",
                 pronouns: "",
                 customPronouns: "",
                 referralCode: "",
+                newsletter: false,
             });
             setCompleted(true);
             return;
@@ -257,7 +257,8 @@ export default function SignUp() {
         <div className="relative h-full grid grid-rows-2 ">
 
             {/* Step content */}
-            <div ref={contentRef} className=" flex flex-1 overflow-hidden">
+            <div ref={contentRef} className=" flex-1 overflow-hidden">
+                <SignUpHeader />
                 <FormProvider {...methods}>
                     <div
                         className={`w-full transition-all duration-200 ease-in-out ${isAnimating
@@ -274,24 +275,16 @@ export default function SignUp() {
 
             {/* Navigation buttons */}
             <div className="flex flex-col items-center justify-end gap-y-4 px-8 py-4">
-                <button
-                    type="button"
+                <Button
                     onClick={handleNext}
-                    className="rounded-lg w-8/10 border border-white/10px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-900/20"
-                >
-                    {step === STEPS.length - 1 ? "Submit" : "Next"}
-                </button>
-                <button
-                    type="button"
+                    label={step === STEPS.length - 1 ? "Submit" : "Next"}
+                />
+                <Button
+                    variant="secondary"
                     onClick={handleBack}
                     disabled={!canGoBack(step)}
-                    className={`rounded-lg border border-white/10 w-8/10 px-6 py-2.5 text-sm font-medium transition-colors ${!canGoBack(step)
-                        ? "cursor-not-allowed text-gray-300"
-                        : "text-gray-600 hover:bg-gray-100"
-                        }`}
-                >
-                    Back
-                </button>
+                    label="Back"
+                />
             </div>
         </div>
     );

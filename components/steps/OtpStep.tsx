@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
+import OtpInput from "@/components/ui/OtpInput";
+
 type OtpStepProps = {
   onComplete?: () => void;
   showErrors?: boolean;
@@ -10,8 +12,8 @@ type OtpStepProps = {
 
 export default function OtpStep({ onComplete, showErrors }: OtpStepProps) {
   const {
-    register,
     watch,
+    setValue,
     formState: { errors },
   } = useFormContext();
 
@@ -33,13 +35,10 @@ export default function OtpStep({ onComplete, showErrors }: OtpStepProps) {
         Enter the 6-digit code sent to your email.
       </p>
       <div className="flex flex-col gap-1">
-        <input
-          type="text"
-          inputMode="numeric"
-          maxLength={6}
-          placeholder="000000"
-          className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-[0.5em] font-mono outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-          {...register("otp")}
+        <OtpInput
+          value={otp ?? ""}
+          error={showErrors && !!errors.otp}
+          onChange={(v) => setValue("otp", v, { shouldValidate: true })}
         />
         {showErrors && errors.otp && (
           <p className="text-sm text-red-500">

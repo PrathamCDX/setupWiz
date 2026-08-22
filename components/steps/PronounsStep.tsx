@@ -2,14 +2,26 @@
 
 import { useFormContext } from "react-hook-form";
 
+import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
+
+const PRONOUN_OPTIONS: DropdownOption[] = [
+  { value: "he/him", label: "He/Him" },
+  { value: "she/her", label: "She/Her" },
+  { value: "they/them", label: "They/Them" },
+  { value: "prefer-not", label: "Prefer not to say" },
+  { value: "custom", label: "Custom" },
+];
+
 type PronounsStepProps = {
   showErrors?: boolean;
 };
 
 export default function PronounsStep({ showErrors }: PronounsStepProps) {
   const {
-    register,
     watch,
+    setValue,
+    trigger,
+    register,
     formState: { errors },
   } = useFormContext();
 
@@ -23,17 +35,18 @@ export default function PronounsStep({ showErrors }: PronounsStepProps) {
       </p>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <select
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-            {...register("pronouns")}
-          >
-            <option value="">Select pronouns</option>
-            <option value="he/him">He/Him</option>
-            <option value="she/her">She/Her</option>
-            <option value="they/them">They/Them</option>
-            <option value="prefer-not">Prefer not to say</option>
-            <option value="custom">Custom</option>
-          </select>
+          <Dropdown
+            variant="dark"
+            openDirection="down"
+            aria-label="Select pronouns"
+            placeholder="Select pronouns"
+            options={PRONOUN_OPTIONS}
+            value={pronouns ?? ""}
+            onChange={(value) => {
+              setValue("pronouns", value);
+              if (showErrors) void trigger("pronouns");
+            }}
+          />
           {showErrors && errors.pronouns && (
             <p className="text-sm text-red-500">
               {errors.pronouns.message as string}
