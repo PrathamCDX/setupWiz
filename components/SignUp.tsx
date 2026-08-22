@@ -12,8 +12,6 @@ import NameStep from "@/components/steps/NameStep";
 import AgeStep from "@/components/steps/AgeStep";
 import PronounsStep from "@/components/steps/PronounsStep";
 import ReferralStep from "@/components/steps/ReferralStep";
-import Button from "@/components/ui/Button";
-import Image from "next/image";
 import SignUpHeader from "./steps/SignUpHeader";
 
 const STORAGE_KEY = "signup-wizard-data";
@@ -268,24 +266,15 @@ export default function SignUp() {
                             : "opacity-100"
                             }`}
                     >
-                        <StepComponent onComplete={handleNext} showErrors={showErrors} />
+                        <StepComponent
+                            onComplete={handleNext}
+                            showErrors={showErrors}
+                            onForward={handleNext}
+                            onBackward={canGoBack(step) ? handleBack : undefined}
+                        />
                     </div>
                 </FormProvider>
-                <div className="flex flex-col items-center justify-end gap-y-4 px-8 py-4">
-                    <Button
-                        onClick={handleNext}
-                        label={step === STEPS.length - 1 ? "Submit" : "Next"}
-                    />
-                    <Button
-                        variant="secondary"
-                        onClick={handleBack}
-                        disabled={!canGoBack(step)}
-                        label="Back"
-                    />
-                </div>
             </div>
-
-            {/* Navigation buttons */}
         </div>
     );
 }

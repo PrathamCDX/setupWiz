@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 
 import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
 import Button from "@/components/ui/Button";
+import StepNav from "@/components/steps/StepNav";
 import { calculateAge } from "@/components/SignUp";
 
 const DOB_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
@@ -28,6 +29,8 @@ const YEAR_RANGE = 120;
 
 type AgeStepProps = {
   showErrors?: boolean;
+  onForward?: () => void;
+  onBackward?: () => void;
 };
 
 function parseDob(value: string | undefined): Date | undefined {
@@ -43,7 +46,11 @@ function daysInMonth(month: string, year: string): number {
   return new Date(y, Number(month), 0).getDate();
 }
 
-export default function AgeStep({ showErrors }: AgeStepProps) {
+export default function AgeStep({
+  showErrors,
+  onForward,
+  onBackward,
+}: AgeStepProps) {
   const {
     watch,
     setValue,
@@ -250,6 +257,7 @@ export default function AgeStep({ showErrors }: AgeStepProps) {
           </p>
         )}
       </div>
+      <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
   );
 }

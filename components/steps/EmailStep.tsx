@@ -2,11 +2,19 @@
 
 import { useFormContext } from "react-hook-form";
 
+import StepNav from "@/components/steps/StepNav";
+
 type EmailStepProps = {
   showErrors?: boolean;
+  onForward?: () => void;
+  onBackward?: () => void;
 };
 
-export default function EmailStep({ showErrors }: EmailStepProps) {
+export default function EmailStep({
+  showErrors,
+  onForward,
+  onBackward,
+}: EmailStepProps) {
   const {
     register,
     formState: { errors },
@@ -42,6 +50,7 @@ export default function EmailStep({ showErrors }: EmailStepProps) {
         />
         Subscribe to our newsletter
       </label>
+      <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
   );
 }

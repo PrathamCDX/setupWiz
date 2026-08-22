@@ -4,13 +4,21 @@ import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 import OtpInput from "@/components/ui/OtpInput";
+import StepNav from "@/components/steps/StepNav";
 
 type OtpStepProps = {
   onComplete?: () => void;
   showErrors?: boolean;
+  onForward?: () => void;
+  onBackward?: () => void;
 };
 
-export default function OtpStep({ onComplete, showErrors }: OtpStepProps) {
+export default function OtpStep({
+  onComplete,
+  showErrors,
+  onForward,
+  onBackward,
+}: OtpStepProps) {
   const {
     watch,
     setValue,
@@ -46,6 +54,7 @@ export default function OtpStep({ onComplete, showErrors }: OtpStepProps) {
           </p>
         )}
       </div>
+      <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
   );
 }

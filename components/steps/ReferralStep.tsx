@@ -2,11 +2,19 @@
 
 import { useFormContext } from "react-hook-form";
 
+import StepNav from "@/components/steps/StepNav";
+
 type ReferralStepProps = {
   showErrors?: boolean;
+  onForward?: () => void;
+  onBackward?: () => void;
 };
 
-export default function ReferralStep({ showErrors }: ReferralStepProps) {
+export default function ReferralStep({
+  showErrors,
+  onForward,
+  onBackward,
+}: ReferralStepProps) {
   const {
     register,
     formState: { errors },
@@ -29,6 +37,11 @@ export default function ReferralStep({ showErrors }: ReferralStepProps) {
           </p>
         )}
       </div>
+      <StepNav
+        onForward={onForward}
+        onBackward={onBackward}
+        forwardLabel="Submit"
+      />
     </div>
   );
 }

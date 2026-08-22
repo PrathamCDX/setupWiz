@@ -2,11 +2,19 @@
 
 import { useFormContext } from "react-hook-form";
 
+import StepNav from "@/components/steps/StepNav";
+
 type UsernameStepProps = {
   showErrors?: boolean;
+  onForward?: () => void;
+  onBackward?: () => void;
 };
 
-export default function UsernameStep({ showErrors }: UsernameStepProps) {
+export default function UsernameStep({
+  showErrors,
+  onForward,
+  onBackward,
+}: UsernameStepProps) {
   const {
     register,
     formState: { errors },
@@ -32,6 +40,7 @@ export default function UsernameStep({ showErrors }: UsernameStepProps) {
           </p>
         )}
       </div>
+      <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
   );
 }

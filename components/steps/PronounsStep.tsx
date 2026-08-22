@@ -3,6 +3,7 @@
 import { useFormContext } from "react-hook-form";
 
 import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
+import StepNav from "@/components/steps/StepNav";
 
 const PRONOUN_OPTIONS: DropdownOption[] = [
   { value: "he/him", label: "He/Him" },
@@ -14,9 +15,15 @@ const PRONOUN_OPTIONS: DropdownOption[] = [
 
 type PronounsStepProps = {
   showErrors?: boolean;
+  onForward?: () => void;
+  onBackward?: () => void;
 };
 
-export default function PronounsStep({ showErrors }: PronounsStepProps) {
+export default function PronounsStep({
+  showErrors,
+  onForward,
+  onBackward,
+}: PronounsStepProps) {
   const {
     watch,
     setValue,
@@ -69,6 +76,7 @@ export default function PronounsStep({ showErrors }: PronounsStepProps) {
           </div>
         )}
       </div>
+      <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
   );
 }
