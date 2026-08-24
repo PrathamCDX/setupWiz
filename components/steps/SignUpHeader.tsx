@@ -12,9 +12,9 @@ export default function SignUpHeader({ children }: { children?: React.ReactNode 
                     className="h-full w-auto "
                 />
             </div>
-            <div className=" w-full h-full">
+            {children && <div className=" w-full h-full">
                 {children}
-            </div>
+            </div>}
         </div>
     );
 }   

@@ -256,7 +256,8 @@ export default function SignUp() {
 
             {/* Step content */}
             <div ref={contentRef} className=" flex-1 overflow-hidden">
-                <SignUpHeader />
+                <SignUpHeader>
+                </SignUpHeader>
                 <FormProvider {...methods}>
                     <div
                         className={`w-full transition-all duration-200 ease-in-out ${isAnimating
