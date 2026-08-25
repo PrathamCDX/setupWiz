@@ -48,11 +48,11 @@ export default function OtpStep({
           error={showErrors && !!errors.otp}
           onChange={(v) => setValue("otp", v, { shouldValidate: true })}
         />
-        {showErrors && errors.otp && (
-          <p className="text-sm text-red-500">
-            {errors.otp.message as string}
-          </p>
-        )}
+        <p className="text-sm text-red-500 h-4 px-1">
+          {showErrors && errors.otp &&
+            errors.otp.message as string
+          }
+        </p>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />
     </div>

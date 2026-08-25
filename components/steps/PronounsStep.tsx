@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
 import StepNav from "@/components/steps/StepNav";
+import { SignupFormDataType } from "@/validations/SignUp.validation";
 
 const PRONOUN_OPTIONS: DropdownOption[] = [
   { value: "he/him", label: "He/Him" },
@@ -30,7 +31,7 @@ export default function PronounsStep({
     trigger,
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<SignupFormDataType>();
 
   const pronouns = watch("pronouns");
 
@@ -53,12 +54,13 @@ export default function PronounsStep({
               setValue("pronouns", value);
               if (showErrors) void trigger("pronouns");
             }}
+            error={showErrors && !!errors.pronouns}
           />
-          {showErrors && errors.pronouns && (
-            <p className="text-sm text-red-500">
-              {errors.pronouns.message as string}
-            </p>
-          )}
+          <p className="text-sm text-red-500 h-4 px-1">
+            {showErrors && errors.pronouns && (
+              errors.pronouns.message as string
+            )}
+          </p>
         </div>
         {pronouns === "custom" && (
           <div className="flex flex-col gap-1">

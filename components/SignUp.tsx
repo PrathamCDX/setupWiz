@@ -13,6 +13,7 @@ import AgeStep from "@/components/steps/AgeStep";
 import PronounsStep from "@/components/steps/PronounsStep";
 import ReferralStep from "@/components/steps/ReferralStep";
 import SignUpHeader from "./steps/SignUpHeader";
+import { SignupFormDataType, signupSchema } from "@/validations/SignUp.validation";
 
 const STORAGE_KEY = "signup-wizard-data";
 
@@ -29,49 +30,8 @@ function calculateAge(dob: string): number {
 
 export { calculateAge };
 
-const signupSchema = z
-    .object({
-        email: z.string().min(1, "Email is required").email("Invalid email"),
-        otp: z
-            .string()
-            .length(6, "Must be 6 digits")
-            .regex(/^\d{6}$/, "Must be 6 digits"),
-        username: z
-            .string()
-            .min(1, "Username is required")
-            .regex(
-                /^[a-zA-Z0-9_]{3,20}$/,
-                "3\u201320 characters; letters, numbers and _ only"
-            ),
-        name: z.string().min(3, "Name must be at least 3 characters long"),
-        dob: z.string().min(1, "Date of birth is required"),
-        pronouns: z.string().min(1, "Please select pronouns"),
-        customPronouns: z.string().optional(),
-        referralCode: z
-            .string()
-            .regex(/^[a-zA-Z0-9]{4,16}$/, "4\u201316 letters or numbers")
-            .optional()
-            .or(z.literal("")),
-        newsletter: z.boolean(),
-    })
-    .refine(
-        (data) =>
-            data.pronouns !== "custom" ||
-            (data.customPronouns && data.customPronouns.length > 0),
-        { message: "Please enter your pronouns", path: ["customPronouns"] }
-    )
-    .refine(
-        (data) => {
-            if (!data.dob) return false;
-            const age = calculateAge(data.dob);
-            return age >= 18 && age <= 120;
-        },
-        { message: "You must be atleast 18", path: ["dob"] }
-    );
 
-type SignupFormData = z.infer<typeof signupSchema>;
-
-const stepFields: Record<number, (keyof SignupFormData)[]> = {
+const stepFields: Record<number, (keyof SignupFormDataType)[]> = {
     0: ["email"],
     1: ["otp"],
     2: ["username"],
@@ -81,7 +41,7 @@ const stepFields: Record<number, (keyof SignupFormData)[]> = {
     6: ["referralCode"],
 };
 
-const STORAGE_FIELDS: (keyof SignupFormData)[] = [
+const STORAGE_FIELDS: (keyof SignupFormDataType)[] = [
     "email",
     "username",
     "name",
@@ -108,7 +68,7 @@ function canGoBack(step: number): boolean {
     return step !== 0 && step !== SECTION_BOUNDARY;
 }
 
-function loadStoredData(): Partial<SignupFormData> {
+function loadStoredData(): Partial<SignupFormDataType> {
     if (typeof window === "undefined") return {};
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -122,7 +82,7 @@ function loadStoredData(): Partial<SignupFormData> {
     }
 }
 
-function saveToStorage(data: SignupFormData) {
+function saveToStorage(data: SignupFormDataType) {
     const subset: Record<string, unknown> = {};
     for (const key of STORAGE_FIELDS) {
         subset[key] = data[key];
@@ -140,7 +100,7 @@ export default function SignUp() {
     const mountedRef = useRef(false);
     const contentRef = useRef<HTMLDivElement>(null);
 
-    const methods = useForm<SignupFormData>({
+    const methods = useForm<SignupFormDataType>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
             email: "",

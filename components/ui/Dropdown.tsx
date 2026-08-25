@@ -15,6 +15,7 @@ type DropdownProps = {
   "aria-label"?: string;
   variant?: "light" | "dark";
   openDirection?: "up" | "down";
+  error?: boolean
 };
 
 const TRIGGER_STYLES = {
@@ -55,6 +56,7 @@ export default function Dropdown({
   "aria-label": ariaLabel,
   variant = "light",
   openDirection = "down",
+  error = false,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -164,7 +166,7 @@ export default function Dropdown({
         }
         onClick={() => (isOpen ? closeListbox() : openListbox())}
         onKeyDown={handleTriggerKeyDown}
-        className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${TRIGGER_STYLES[variant]}`}
+        className={` border flex w-full items-center justify-between rounded-lg  px-4 py-3 text-left text-base  transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 ${''}  ${error ? "border-red-400" : TRIGGER_STYLES[variant]}`}
       >
         <span className={selectedLabel ? "" : PLACEHOLDER_STYLES[variant]}>
           {selectedLabel || placeholder}
@@ -174,9 +176,8 @@ export default function Dropdown({
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden="true"
-          className={`h-5 w-5 shrink-0 opacity-60 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`h-5 w-5 shrink-0 opacity-60 transition-transform ${isOpen ? "rotate-180" : ""
+            }`}
         >
           <path
             fillRule="evenodd"
@@ -191,9 +192,8 @@ export default function Dropdown({
           id={listboxId}
           role="listbox"
           aria-label={ariaLabel}
-          className={`absolute z-20 max-h-48 w-full overflow-y-auto rounded-lg border py-1 shadow-lg ${
-            openDirection === "up" ? "bottom-full mb-2" : "top-full mt-1"
-          } ${PANEL_STYLES[variant]}`}
+          className={`absolute z-20 max-h-48 w-full overflow-y-auto rounded-lg border py-1 shadow-lg ${openDirection === "up" ? "bottom-full mb-2" : "top-full mt-1"
+            } ${PANEL_STYLES[variant]}`}
         >
           {options.map((option, index) => {
             const isSelected = option.value === value;
@@ -206,13 +206,12 @@ export default function Dropdown({
                 role="option"
                 aria-selected={isSelected}
                 onClick={() => selectOption(option)}
-                className={`cursor-pointer px-4 py-2 text-base ${styles.base} ${
-                  isSelected
-                    ? styles.selected
-                    : isActive
-                      ? styles.active
-                      : styles.hover
-                }`}
+                className={`cursor-pointer px-4 py-2 text-base ${styles.base} ${isSelected
+                  ? styles.selected
+                  : isActive
+                    ? styles.active
+                    : styles.hover
+                  }`}
               >
                 {option.label}
               </li>

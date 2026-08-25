@@ -31,11 +31,11 @@ export default function ReferralStep({
           className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30"
           {...register("referralCode")}
         />
-        {showErrors && errors.referralCode && (
-          <p className="text-sm text-red-500">
-            {errors.referralCode.message as string}
-          </p>
-        )}
+        <p className="text-sm text-red-500 h-4 px-1">
+          {showErrors && errors.referralCode && (
+            errors.referralCode.message as string
+          )}
+        </p>
       </div>
       <StepNav
         onForward={onForward}

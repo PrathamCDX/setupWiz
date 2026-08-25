@@ -3,6 +3,7 @@
 import { useFormContext } from "react-hook-form";
 
 import StepNav from "@/components/steps/StepNav";
+import { SignupFormDataType } from "@/validations/SignUp.validation";
 
 type UsernameStepProps = {
   showErrors?: boolean;
@@ -18,7 +19,7 @@ export default function UsernameStep({
   const {
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<SignupFormDataType>();
 
   return (
     <div className="flex flex-col gap-4 mx-8 my-6">
@@ -31,14 +32,15 @@ export default function UsernameStep({
           type="text"
           placeholder="Username"
           autoComplete="username"
-          className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30"
+          className={`w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30 ${errors.username ? "border-red-400" : "border-gray-100/20"
+            }`}
           {...register("username")}
         />
-        {showErrors && errors.username && (
-          <p className="text-sm text-red-500">
-            {errors.username.message as string}
-          </p>
-        )}
+        <p className="text-sm text-red-500 h-4 px-1">
+          {showErrors && errors.username &&
+            errors.username.message as string
+          }
+        </p>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
