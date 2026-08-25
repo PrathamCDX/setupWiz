@@ -1,12 +1,16 @@
-import SignUp from "@/components/SignUp";
+'use client';
+
+import { useRouter } from "next/navigation"
 
 export default function Home() {
+  const router = useRouter();
   return (
-    <div className="h-full w-full border border-red-500 grid sm:grid-cols-[3fr_2fr] ">
-      <div className="h-full hidden sm:block border border-green-500"></div>
-      <div className="h-full border border-blue-500">
-        <SignUp />
-      </div>
+    <div>
+      Welcome to Demointer
+
+      <button onClick={() => { router.push("/signup") }} className="h-20 border px-10 ">
+        Signup
+      </button>
     </div>
   )
 }

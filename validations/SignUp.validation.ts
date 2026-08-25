@@ -39,7 +39,7 @@ export const signupSchema = z
             const age = calculateAge(data.dob);
             return age >= 18 && age <= 120;
         },
-        { message: "You must be at least 18 years old to create an account", path: ["dob"] }
+        { message: "You must be at least 18 years old", path: ["dob"] }
     );
 
 export type SignupFormDataType = z.infer<typeof signupSchema>;

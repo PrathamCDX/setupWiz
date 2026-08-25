@@ -191,10 +191,10 @@ export default function AgeStep({
 
         {/* Bottom sheet */}
         <div
-          className={`absolute  inset-0 z-10 transition-opacity duration-200 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          className={`absolute overflow-y-hidden inset-0 z-10 transition-opacity duration-200 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           inert={!isOpen}
-          style={isOpen ? { display: "block" } : { display: "none" }}
+        // style={isOpen ? { display: "block" } : { display: "none" }}
         >
           <div
             className="absolute inset-0 bg-black/10 backdrop-blur-md"
@@ -252,11 +252,11 @@ export default function AgeStep({
           </div>
         </div>
 
-        {(showErrors || validatedOnce) && errors.dob && (
-          <p className="text-sm text-red-500">
-            {errors.dob.message as string}
-          </p>
-        )}
+        <p className="text-sm text-red-500 h-4 px-1">
+          {(showErrors || validatedOnce) && errors.dob && (
+            errors.dob.message as string
+          )}
+        </p>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
