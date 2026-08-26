@@ -1,16 +1,9 @@
-'use client';
 
-import { useRouter } from "next/navigation"
 
 export default function Home() {
-  const router = useRouter();
   return (
-    <div>
+    <div className="h-full w-full bg-transparent flex flex-col items-center justify-center">
       Welcome to Demointer
-
-      <button onClick={() => { router.push("/signup") }} className="h-20 border px-10 ">
-        Signup
-      </button>
     </div>
   )
 }

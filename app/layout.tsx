@@ -1,6 +1,9 @@
+
 import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import DemoComp from "@/components/SlideComponent";
+import SlideComponent from "@/components/SlideComponent";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -24,7 +27,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${poppins.variable} ${geistMono.variable} h-full w-full antialiased`}
     >
-      <body className="h-full w-full">{children}</body>
+      <body className="h-full w-full relative ">
+        <SlideComponent >
+          {children}
+        </SlideComponent>
+      </body>
     </html>
   );
 }
