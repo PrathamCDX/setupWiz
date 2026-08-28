@@ -31,7 +31,7 @@ export default function Home() {
           label="Continue"
           variant="custom"
           onClick={LandingButtonSignUp}
-          className=" font-semibold tracking-wide text-lg mx-8 w-full rounded-lg border px-6 py-1.5  transition-colors border-white/10 text-gray-800 hover:text-gray-200 bg-white hover:bg-white/10 hover:cursor-pointer"
+          className=" font-semibold mb-16 text-lg mx-8 w-full rounded-lg border px-6 py-1.5  transition-colors border-white/10 text-gray-800 hover:text-gray-200 bg-white hover:bg-white/10 hover:cursor-pointer"
         // className=" border-white/10 bg-white/5 border px-16 py-3 my-3 rounded-xl backdrop-blur-2xl  "
         />
       </div>
