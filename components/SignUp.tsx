@@ -212,7 +212,7 @@ export default function SignUp() {
     const StepComponent = STEPS[step].component;
 
     return (
-        <div className="relative h-full text-white ">
+        <div className="relative h-full w-full text-white ">
 
             {/* Step content */}
             <div ref={contentRef} className=" flex-1 overflow-hidden">

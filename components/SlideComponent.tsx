@@ -13,7 +13,7 @@ export default function SlideComponent({ children }: { children: React.ReactNode
     const map: Record<typeof pathName, { component: React.ReactNode; className: string }> = {
         '/signup': {
             component: <SignUp />,
-            className: "fixed w-full sm:w-4/10 h-full top-0 -right-4/10 bg-black/99",
+            className: "fixed w-full sm:w-4/10 h-full top-0 -right-full sm:-right-4/10 bg-black/99",
         },
         '/': {
             component: null,
@@ -30,7 +30,7 @@ export default function SlideComponent({ children }: { children: React.ReactNode
     const isOpen = pathName !== '/';
 
     return (
-        <div className={`h-full relative w-full bg-transparent transition-transform duration-500 ${isOpen ? "translate-x-[-40%] " : ""}`}>
+        <div className={`h-full relative w-full bg-transparent transition-transform duration-500 ${isOpen ? "translate-x-[-100%] sm:translate-x-[-40%] " : ""}`}>
             <div className="absolute top-0 left-0 w-full h-full z-0 bg-[#000000]">
                 <GradientWaves
                     horizonColor="#e527ff"
