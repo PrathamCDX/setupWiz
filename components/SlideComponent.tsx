@@ -1,19 +1,33 @@
 'use client';
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SignUp from "./SignUp";
 import GradientWaves from "./ui/GradientWaves";
+import { useEffect, useState } from "react";
 
 export default function SlideComponent({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
     const pathName = usePathname();
+
+    const [current, setCurrent] = useState<string | undefined>();
 
     const map: Record<typeof pathName, { component: React.ReactNode; className: string }> = {
         '/signup': {
             component: <SignUp />,
-            className: "fixed w-4/10 h-full top-0 -right-4/10 bg-black/99",
+            className: "fixed w-full sm:w-4/10 h-full top-0 -right-4/10 bg-black/99",
         },
+        '/': {
+            component: null,
+            className: "",
+        }
     }
 
-    const isOpen = map[pathName] !== undefined;
+    useEffect(() => {
+        if (pathName !== "/") {
+            setCurrent(pathName);
+        }
+    }, [pathName]);
+
+    const isOpen = pathName !== '/';
 
     return (
         <div className={`h-full relative w-full bg-transparent transition-transform duration-500 ${isOpen ? "translate-x-[-40%] " : ""}`}>
@@ -42,12 +56,14 @@ export default function SlideComponent({ children }: { children: React.ReactNode
                 />
             </div>
             <div className="absolute top-0 left-0 w-full h-full z-10">
-                {!map[pathName] && children}
+
+                {!isOpen && children}
+
                 {
-                    !!map[pathName] && (
-                        <div className={map[pathName].className}>
+                    current && !!map[current] && (
+                        <div className={map[current].className}>
                             {/* <SignUp /> */}
-                            {map[pathName].component}
+                            {map[current].component}
                         </div>
                     )
                 }

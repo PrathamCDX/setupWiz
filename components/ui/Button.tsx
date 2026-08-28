@@ -42,7 +42,7 @@ export default function Button({
     <button
       type={type}
       disabled={disabled}
-      className={`${variant === "custom" ? "" : BASE_STYLES} ${stateStyles}${className ? ` ${className}` : ""}`}
+      className={`${variant === "custom" ? "" : BASE_STYLES} ${stateStyles} ${className ? ` ${className}` : ""}`}
       {...rest}
     >
       {label}
