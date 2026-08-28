@@ -3,7 +3,11 @@
 export default function Home() {
   return (
     <div className="h-full w-full bg-transparent flex flex-col items-center justify-center">
-      Welcome to Demointer
+      <div>
+        Extroverts
+      </div>
+      <div></div>
+      <div></div>
     </div>
   )
 }

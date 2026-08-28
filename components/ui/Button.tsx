@@ -2,7 +2,7 @@
 
 import type { ButtonHTMLAttributes } from "react";
 
-export type ButtonVariant = "primary" | "secondary";
+export type ButtonVariant = "primary" | "secondary" | "custom";
 
 type ButtonProps = {
   label: string;
@@ -22,6 +22,10 @@ const VARIANT_STYLES: Record<ButtonVariant, { enabled: string; disabled: string 
     enabled: "border-white/10 text-white hover:text-gray-800 hover:bg-gray-100 hover:cursor-pointer",
     disabled: "border-white/10 text-gray-300 cursor-not-allowed",
   },
+  custom: {
+    enabled: "",
+    disabled: ""
+  }
 };
 
 export default function Button({
@@ -38,7 +42,7 @@ export default function Button({
     <button
       type={type}
       disabled={disabled}
-      className={`${BASE_STYLES} ${stateStyles}${className ? ` ${className}` : ""}`}
+      className={`${variant === "custom" ? "" : BASE_STYLES} ${stateStyles}${className ? ` ${className}` : ""}`}
       {...rest}
     >
       {label}
