@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import type { ButtonHTMLAttributes } from "react";
 
 export type ButtonVariant = "primary" | "secondary" | "custom";
@@ -48,4 +49,17 @@ export default function Button({
       {label}
     </button>
   );
+}
+
+export function LandingButtonSignUp() {
+  const router = useRouter();
+
+  return (
+    <Button
+      label="Continue"
+      variant="custom"
+      onClick={() => router.push('/signup')}
+      className=" font-semibold mb-16 text-lg mx-8 w-full rounded-lg border px-6 py-1.5  transition-colors border-white/10 text-gray-800 hover:text-gray-200 bg-white hover:bg-white/10 hover:cursor-pointer"
+    />
+  )
 }
