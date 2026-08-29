@@ -30,7 +30,7 @@ export default function SlideComponent({ children }: { children: React.ReactNode
     const isOpen = pathName !== '/';
 
     return (
-        <div className={`h-full relative w-full bg-transparent transition-transform duration-500 ${isOpen ? "translate-x-[-100%] sm:translate-x-[-40%] " : ""}`}>
+        <div className={`h-full relative w-full bg-transparent transition-transform duration-500 ${isOpen ? "-translate-x-full sm:translate-x-[-40%] " : ""}`}>
             <div className="absolute top-0 left-0 w-full h-full z-0 bg-[#000000]">
                 <GradientWaves
                     horizonColor="#e527ff"
