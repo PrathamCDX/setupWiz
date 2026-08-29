@@ -23,7 +23,7 @@ export default function ReferralStep({
     formState: { errors },
   } = useFormContext<SignupFormDataType>();
 
-  const [{ isPending, error }] = useMutationState({
+  const [mutationState] = useMutationState({
     filters: { mutationKey: SIGNUP_MUTATION_KEY },
     select: (state) => ({
       isPending: state.state.status === "pending",
@@ -31,7 +31,8 @@ export default function ReferralStep({
     }),
   });
 
-  const submitError = error?.message;
+  const isPending = mutationState?.isPending ?? false;
+  const submitError = mutationState?.error?.message;
 
   return (
     <div className="h-full min-h-0 flex flex-col  mx-8 my-6">

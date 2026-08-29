@@ -50,7 +50,7 @@ export default function OtpStep({
         <div className="w-full font-light text-sm text-white/50 mt-2.5 text-end">
           Resend OTP
         </div>
-        <p className="text-sm text-red-500 h-4 px-1">
+        <p className="text-sm text-red-500 min-h-4 px-1">
           {showErrors && errors.otp &&
             errors.otp.message as string
           }
