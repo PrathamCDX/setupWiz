@@ -3,6 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import SignUp from "./SignUp";
 import GradientWaves from "./ui/GradientWaves";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function SlideComponent({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -58,6 +59,17 @@ export default function SlideComponent({ children }: { children: React.ReactNode
             <div className="absolute top-0 left-0 w-full h-full z-10">
 
                 {!isOpen && children}
+                {isOpen && <div className="h-full px-10 w-6/10 absolute right-0 top-0  flex flex-col items-center justify-center text-center">
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={100}
+                        height={100}
+                        className="mb-10 h-18 rounded-lg overflow-hidden w-auto"
+                    />
+                    <div className=" text-3xl mb-4 text-white tracking-wider font-bold">DISCLAIMER</div>
+                    <div className="text-white text-lg font-light tracking-wider">This can make you extremely addicted to socializing and parties. <br /> Signup at your own risk.</div>
+                </div>}
 
                 {
                     current && !!map[current] && (
