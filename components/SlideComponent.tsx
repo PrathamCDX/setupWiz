@@ -1,6 +1,7 @@
 'use client';
 import { usePathname, useRouter } from "next/navigation";
 import SignUp from "./SignUp";
+import SignupQueryProvider from "./SignupQueryProvider";
 import GradientWaves from "./ui/GradientWaves";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -13,7 +14,11 @@ export default function SlideComponent({ children }: { children: React.ReactNode
 
     const map: Record<typeof pathName, { component: React.ReactNode; className: string }> = {
         '/signup': {
-            component: <SignUp />,
+            component: (
+                <SignupQueryProvider>
+                    <SignUp />
+                </SignupQueryProvider>
+            ),
             className: "fixed w-full sm:w-4/10 h-dvh sm:h-full top-0 bottom-0 -right-full sm:-right-4/10 bg-black/99",
         },
         '/': {

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 
 import EmailStep from "@/components/steps/EmailStep";
 import OtpStep from "@/components/steps/OtpStep";
@@ -14,8 +14,23 @@ import PronounsStep from "@/components/steps/PronounsStep";
 import ReferralStep from "@/components/steps/ReferralStep";
 import SignUpHeader from "./steps/SignUpHeader";
 import { SignupFormDataType, signupSchema } from "@/validations/SignUp.validation";
+import { SIGNUP_MUTATION_KEY } from "@/lib/queryKeys";
 
 const STORAGE_KEY = "signup-wizard-data";
+
+const EMPTY_VALUES: SignupFormDataType = {
+    email: "",
+    otp: "",
+    username: "",
+    name: "",
+    dob: "",
+    pronouns: [],
+    customPronouns: "",
+    referralCode: "",
+    newsletter: false,
+};
+
+const FAIL_NEXT_CALL = false;
 
 function calculateAge(dob: string): number {
     const birth = new Date(dob);
@@ -106,20 +121,26 @@ export default function SignUp() {
 
     const methods = useForm<SignupFormDataType>({
         resolver: zodResolver(signupSchema),
-        defaultValues: {
-            email: "",
-            otp: "",
-            username: "",
-            name: "",
-            dob: "",
-            pronouns: [],
-            customPronouns: "",
-            referralCode: "",
-            newsletter: false,
-        },
+        defaultValues: EMPTY_VALUES,
         mode: "onChange",
         reValidateMode: "onChange",
 
+    });
+
+    const apiCall = async () => {
+        await new Promise((res) => setTimeout(res, 3000));
+        if (FAIL_NEXT_CALL) throw new Error("Couldn't create your account. Try again.");
+        return { ok: true };
+    }
+
+    const mutation = useMutation({
+        mutationKey: SIGNUP_MUTATION_KEY,
+        mutationFn: apiCall,
+        onSuccess: () => {
+            localStorage.removeItem(STORAGE_KEY);
+            methods.reset(EMPTY_VALUES);
+            setCompleted(true);
+        },
     });
 
     // Hydrate from localStorage on mount
@@ -129,15 +150,7 @@ export default function SignUp() {
         const stored = loadStoredData();
         if (Object.keys(stored).length > 0) {
             methods.reset({
-                email: "",
-                otp: "",
-                username: "",
-                name: "",
-                dob: "",
-                pronouns: [],
-                customPronouns: "",
-                referralCode: "",
-                newsletter: false,
+                ...EMPTY_VALUES,
                 ...stored,
             });
         }
@@ -164,28 +177,17 @@ export default function SignUp() {
 
     const handleNext = async () => {
         setShowErrors(true);
-        const fields = stepFields[step];
-        const valid = await methods.trigger(fields);
-        if (!valid) return;
-
         if (step === STEPS.length - 1) {
-            localStorage.removeItem(STORAGE_KEY);
-            methods.reset({
-                email: "",
-                otp: "",
-                username: "",
-                name: "",
-                dob: "",
-                pronouns: [],
-                customPronouns: "",
-                referralCode: "",
-                newsletter: false,
-            });
-            setCompleted(true);
+            const valid = await methods.trigger();
+            if (!valid) return;
+            if (mutation.isPending) return;
+            mutation.mutate();
             return;
         }
 
-
+        const fields = stepFields[step];
+        const valid = await methods.trigger(fields);
+        if (!valid) return;
 
         const data = methods.getValues();
         saveToStorage(data);

@@ -1,0 +1,1 @@
+export const SIGNUP_MUTATION_KEY = ["signup"] as const;

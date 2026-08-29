@@ -1,8 +1,11 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+import { useMutationState } from "@tanstack/react-query";
 
 import StepNav from "@/components/steps/StepNav";
+import { SignupFormDataType } from "@/validations/SignUp.validation";
+import { SIGNUP_MUTATION_KEY } from "@/lib/queryKeys";
 
 type ReferralStepProps = {
   showErrors?: boolean;
@@ -18,7 +21,17 @@ export default function ReferralStep({
   const {
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<SignupFormDataType>();
+
+  const [{ isPending, error }] = useMutationState({
+    filters: { mutationKey: SIGNUP_MUTATION_KEY },
+    select: (state) => ({
+      isPending: state.state.status === "pending",
+      error: state.state.error ?? null,
+    }),
+  });
+
+  const submitError = error?.message;
 
   return (
     <div className="h-full min-h-0 flex flex-col  mx-8 my-6">
@@ -49,15 +62,20 @@ export default function ReferralStep({
           <p className="text-sm text-gray-500 mb-2">
             Enter invite code and get upto +30 HVTs
           </p>
-
         </div>
-
       </div>
-      <StepNav
-        onForward={onForward}
-        onBackward={onBackward}
-        forwardLabel="Let's Go"
-      />
+      <div className="flex flex-col gap-3">
+        {submitError && (
+          <p className="mx-8 text-sm text-red-500">{submitError}</p>
+        )}
+        <StepNav
+          onForward={onForward}
+          onBackward={onBackward}
+          forwardLabel="Let's Go"
+          loading={isPending}
+          disabled={isPending}
+        />
+      </div>
     </div>
   );
 }

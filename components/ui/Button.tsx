@@ -9,6 +9,7 @@ type ButtonProps = {
   label: string;
   variant?: ButtonVariant;
   className?: string;
+  loading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const BASE_STYLES =
@@ -34,19 +35,23 @@ export default function Button({
   variant = "primary",
   className,
   disabled,
+  loading,
   type = "button",
   ...rest
 }: ButtonProps) {
-  const stateStyles = disabled ? VARIANT_STYLES[variant].disabled : VARIANT_STYLES[variant].enabled;
+  const stateStyles = disabled || loading ? VARIANT_STYLES[variant].disabled : VARIANT_STYLES[variant].enabled;
 
   return (
     <button
       type={type}
-      disabled={disabled}
+      disabled={disabled || loading}
       className={`${variant === "custom" ? "" : BASE_STYLES} ${stateStyles} ${className ? ` ${className}` : ""}`}
       {...rest}
     >
-      {label}
+      {loading && (
+        <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent align-middle" />
+      )}
+      <span className="align-middle">{loading ? "Submitting..." : label}</span>
     </button>
   );
 }
