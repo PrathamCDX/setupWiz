@@ -56,11 +56,11 @@ export default function PronounsStep({
   }
 
   return (
-    <div className="h-full min-h-0 flex flex-col gap-4 mx-8 my-6">
+    <div className="h-full min-h-0 flex flex-col mx-8 my-6">
       <div className="flex-1 w-full">
         <h2 className="text-2xl font-semibold mb-4">Your pronouns</h2>
         <p className="text-sm text-gray-500 mb-2">
-          How would you like to be addressed?
+          PRONOUNS
         </p>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
@@ -74,11 +74,11 @@ export default function PronounsStep({
               onChange={handleChange}
               error={showErrors && !!errors.pronouns}
             />
-            <p className="text-sm text-red-500 h-4 px-1">
-              {showErrors && errors.pronouns && (
-                errors.pronouns.message as string
-              )}
-            </p>
+            {showErrors && errors.pronouns && (
+              <p className="text-sm text-red-500 h-4 px-1">
+                {errors.pronouns.message as string}
+              </p>
+            )}
           </div>
           {pronouns?.includes("custom") && (
             <div className="flex flex-col gap-1">
@@ -95,6 +95,9 @@ export default function PronounsStep({
               )}
             </div>
           )}
+          <p className="text-sm text-gray-500 mb-2">
+            Select the pronouns that feel right for you
+          </p>
         </div>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />

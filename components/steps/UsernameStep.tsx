@@ -40,12 +40,12 @@ export default function UsernameStep({
               }`}
             {...register("username")}
           />
-          <p className="text-sm text-red-500 min-h-4 px-1">
-            {showErrors && errors.username &&
-              errors.username.message as string
-            }
-          </p>
-          <div className="w-full text-sm text-white mt-2 font-light tracking-wide">
+          {showErrors && errors.username &&
+            <p className="text-sm text-red-500 min-h-4 px-1">
+              {errors.username.message as string}
+            </p>
+          }
+          <div className="w-full text-sm text-gray-500 mt-2 font-light tracking-wide">
             All your superlatives and invites will come your way with this name, so make it unforgettable!
           </div>
         </div>

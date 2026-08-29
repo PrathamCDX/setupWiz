@@ -36,12 +36,12 @@ export default function NameStep({
               }`}
             {...register("name")}
           />
-          <p className="text-sm text-red-500 min-h-4 px-1 ">
-            {showErrors && errors.name &&
-              errors.name.message as string
-            }
-          </p>
-          <div className="w-full text-sm text-white/ mt-2 font-light tracking-wide">
+          {showErrors && errors.name &&
+            <p className="text-sm text-red-500 min-h-4 px-1 ">
+              {errors.name.message as string}
+            </p>
+          }
+          <div className="w-full text-sm text-gray-500 mt-2 font-light tracking-wide">
             This is the name shown as on members and requests. Cannot be changed later.
           </div>
         </div>

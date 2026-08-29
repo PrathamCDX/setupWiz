@@ -234,11 +234,15 @@ export default function AgeStep({
             </div>
           </div>
 
-          <p className="text-sm text-red-500 h-4 px-1">
-            {(showErrors || validatedOnce) && errors.dob && (
-              errors.dob.message as string
-            )}
-          </p>
+          {(showErrors || validatedOnce) && errors.dob && (
+            <p className="text-sm text-red-500 h-4 px-1">
+              {errors.dob.message as string}
+            </p>
+          )}
+          <div className="text-sm text-gray-500 ">
+            We need your age to verify you are eligible and help others know who they are connecting with
+
+          </div>
         </div>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />
