@@ -112,7 +112,7 @@ export default function PronounsStep({
             onClick={() => (isOpen ? setIsOpen(false) : openSheet())}
             aria-haspopup="dialog"
             aria-expanded={isOpen}
-            className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors focus:border-gray-200/30 ${errors.pronouns ? "border-red-400" : "border-gray-100/20"
+            className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-base outline-none transition-colors ${errors.pronouns ? "border-red-400 focus:border-red-400" : "border-gray-100/20 focus:border-gray-200/30"
               }`}
           >
             <span className={selectedLabels.length > 0 ? "text-white" : "text-gray-500"}>
@@ -186,7 +186,8 @@ export default function PronounsStep({
                       <input
                         type="text"
                         placeholder="Enter your pronouns"
-                        className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30"
+                        className={`w-full rounded-lg border placeholder:text-gray-100/20 px-4 py-3 text-base outline-none ${errors.customPronouns ? "border-red-400 focus:border-red-400" : "border-gray-100/20 focus:border-gray-200/30"
+                          }`}
                         {...register("customPronouns")}
                       />
                       {showErrors && errors.customPronouns && (

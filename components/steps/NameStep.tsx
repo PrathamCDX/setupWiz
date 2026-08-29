@@ -32,7 +32,7 @@ export default function NameStep({
           <input
             type="text"
             placeholder="Full name"
-            className={`w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30 ${errors.name ? "border-red-400" : "border-gray-100/20"
+            className={`w-full rounded-lg border placeholder:text-gray-100/20 px-4 py-3 text-base outline-none ${errors.name ? "border-red-400 focus:border-red-400" : "border-gray-100/20 focus:border-gray-200/30"
               }`}
             {...register("name")}
           />
