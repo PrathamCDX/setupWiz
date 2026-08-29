@@ -224,13 +224,19 @@ export default function AgeStep({
                   </div>
                 </div>
               </div>
-              <Button
-                variant="primary"
-                onClick={handleContinue}
-                disabled={!canContinue}
-                className="mx-auto mt-6 block"
-                label="Continue"
-              />
+              <div className="flex flex-col items-center justify-end gap-y-4">
+                <Button
+                  variant="primary"
+                  onClick={handleContinue}
+                  disabled={!canContinue}
+                  label="Continue"
+                />
+                <Button
+                  variant="secondary"
+                  onClick={() => setIsOpen(false)}
+                  label="Back"
+                />
+              </div>
             </div>
           </div>
 
