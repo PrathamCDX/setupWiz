@@ -45,7 +45,7 @@ export default function EmailStep({
         <input
           type="checkbox"
           // className="h-4 w-4 appearance-none  bg-gray-100 checked:bg-gray-500 checked:rounded rounded border border-gray-300 accent-gray-600 hover:cursor-pointer"
-          className="appearance-none hover:cursor-pointer w-5 h-5 rounded border-2 border-gray-100 bg-gray-100 checked:bg-gray-500 checked:border-gray-500 relative after:content-['✓'] 
+          className="appearance-none hover:cursor-pointer w-5 h-5 rounded border-2 border-gray-100 bg-gray-100 checked:bg-gray-500 checked:border-gray-500 relative  
           after:text-white after:text-sm after:absolute after:hidden checked:after:block after:left-0.5 after:-top-0.5"
           {...register("newsletter")}
         />

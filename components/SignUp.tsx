@@ -76,6 +76,10 @@ function loadStoredData(): Partial<SignupFormDataType> {
         const parsed = JSON.parse(raw);
         // OTP is never restored
         delete parsed.otp;
+        // Normalize legacy pronoun data to an array of strings
+        if (typeof parsed.pronouns === "string") {
+            parsed.pronouns = parsed.pronouns ? [parsed.pronouns] : [];
+        }
         return parsed;
     } catch {
         return {};
@@ -108,7 +112,7 @@ export default function SignUp() {
             username: "",
             name: "",
             dob: "",
-            pronouns: "",
+            pronouns: [],
             customPronouns: "",
             referralCode: "",
             newsletter: false,
@@ -130,7 +134,7 @@ export default function SignUp() {
                 username: "",
                 name: "",
                 dob: "",
-                pronouns: "",
+                pronouns: [],
                 customPronouns: "",
                 referralCode: "",
                 newsletter: false,
@@ -172,7 +176,7 @@ export default function SignUp() {
                 username: "",
                 name: "",
                 dob: "",
-                pronouns: "",
+                pronouns: [],
                 customPronouns: "",
                 referralCode: "",
                 newsletter: false,

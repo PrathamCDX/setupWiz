@@ -2,17 +2,26 @@
 
 import { useFormContext } from "react-hook-form";
 
-import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
+import MultiSelectDropdown from "@/components/ui/MultiSelectDropdown";
+import type { DropdownOption } from "@/components/ui/Dropdown";
 import StepNav from "@/components/steps/StepNav";
 import { SignupFormDataType } from "@/validations/SignUp.validation";
 
 const PRONOUN_OPTIONS: DropdownOption[] = [
-  { value: "he/him", label: "He/Him" },
-  { value: "she/her", label: "She/Her" },
-  { value: "they/them", label: "They/Them" },
+  { value: "he", label: "He" },
+  { value: "him", label: "Him" },
+  { value: "she", label: "She" },
+  { value: "her", label: "Her" },
+  { value: "they", label: "They" },
+  { value: "them", label: "Them" },
+  { value: "ze", label: "Ze" },
+  { value: "xe", label: "Xe" },
+  { value: "ne", label: "Ne" },
   { value: "prefer-not", label: "Prefer not to say" },
   { value: "custom", label: "Custom" },
 ];
+
+const PREFER_NOT_VALUE = "prefer-not";
 
 type PronounsStepProps = {
   showErrors?: boolean;
@@ -35,6 +44,17 @@ export default function PronounsStep({
 
   const pronouns = watch("pronouns");
 
+  function handleChange(values: string[]) {
+    let next = values;
+    if (values.includes(PREFER_NOT_VALUE)) {
+      next = [PREFER_NOT_VALUE];
+    } else {
+      next = values.filter((value) => value !== PREFER_NOT_VALUE);
+    }
+    setValue("pronouns", next);
+    if (showErrors) void trigger("pronouns");
+  }
+
   return (
     <div className="flex flex-col gap-4 mx-8 my-6">
       <h2 className="text-2xl font-semibold">Your pronouns</h2>
@@ -43,17 +63,14 @@ export default function PronounsStep({
       </p>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <Dropdown
+          <MultiSelectDropdown
             variant="dark"
             openDirection="down"
             aria-label="Select pronouns"
             placeholder="Select pronouns"
             options={PRONOUN_OPTIONS}
-            value={pronouns ?? ""}
-            onChange={(value) => {
-              setValue("pronouns", value);
-              if (showErrors) void trigger("pronouns");
-            }}
+            value={pronouns ?? []}
+            onChange={handleChange}
             error={showErrors && !!errors.pronouns}
           />
           <p className="text-sm text-red-500 h-4 px-1">
@@ -62,7 +79,7 @@ export default function PronounsStep({
             )}
           </p>
         </div>
-        {pronouns === "custom" && (
+        {pronouns?.includes("custom") && (
           <div className="flex flex-col gap-1">
             <input
               type="text"

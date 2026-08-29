@@ -18,7 +18,7 @@ export const signupSchema = z
             ),
         name: z.string().min(3, "Your name must be at least 3 characters"),
         dob: z.string().min(1, "Please select your date of birth"),
-        pronouns: z.string().min(1, "Please select your pronouns"),
+        pronouns: z.array(z.string()).min(1, "Please select at least one pronoun"),
         customPronouns: z.string().optional(),
         referralCode: z
             .string()
@@ -29,7 +29,7 @@ export const signupSchema = z
     })
     .refine(
         (data) =>
-            data.pronouns !== "custom" ||
+            !data.pronouns.includes("custom") ||
             (data.customPronouns && data.customPronouns.length > 0),
         { message: "Please type your pronouns", path: ["customPronouns"] }
     )
