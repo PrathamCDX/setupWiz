@@ -56,44 +56,46 @@ export default function PronounsStep({
   }
 
   return (
-    <div className="flex flex-col gap-4 mx-8 my-6">
-      <h2 className="text-2xl font-semibold">Your pronouns</h2>
-      <p className="text-sm text-gray-500">
-        How would you like to be addressed?
-      </p>
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <MultiSelectDropdown
-            variant="dark"
-            openDirection="down"
-            aria-label="Select pronouns"
-            placeholder="Select pronouns"
-            options={PRONOUN_OPTIONS}
-            value={pronouns ?? []}
-            onChange={handleChange}
-            error={showErrors && !!errors.pronouns}
-          />
-          <p className="text-sm text-red-500 h-4 px-1">
-            {showErrors && errors.pronouns && (
-              errors.pronouns.message as string
-            )}
-          </p>
-        </div>
-        {pronouns?.includes("custom") && (
+    <div className="h-full min-h-0 flex flex-col gap-4 mx-8 my-6">
+      <div className="flex-1 w-full">
+        <h2 className="text-2xl font-semibold mb-4">Your pronouns</h2>
+        <p className="text-sm text-gray-500 mb-2">
+          How would you like to be addressed?
+        </p>
+        <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
-            <input
-              type="text"
-              placeholder="Enter your pronouns"
-              className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30"
-              {...register("customPronouns")}
+            <MultiSelectDropdown
+              variant="dark"
+              openDirection="down"
+              aria-label="Select pronouns"
+              placeholder="Select pronouns"
+              options={PRONOUN_OPTIONS}
+              value={pronouns ?? []}
+              onChange={handleChange}
+              error={showErrors && !!errors.pronouns}
             />
-            {showErrors && errors.customPronouns && (
-              <p className="text-sm text-red-500">
-                {errors.customPronouns.message as string}
-              </p>
-            )}
+            <p className="text-sm text-red-500 h-4 px-1">
+              {showErrors && errors.pronouns && (
+                errors.pronouns.message as string
+              )}
+            </p>
           </div>
-        )}
+          {pronouns?.includes("custom") && (
+            <div className="flex flex-col gap-1">
+              <input
+                type="text"
+                placeholder="Enter your pronouns"
+                className="w-full rounded-lg border border-gray-100/20 placeholder:text-gray-100/20 px-4 py-3 text-base outline-none focus:border-gray-200/30"
+                {...register("customPronouns")}
+              />
+              {showErrors && errors.customPronouns && (
+                <p className="text-sm text-red-500">
+                  {errors.customPronouns.message as string}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />
     </div>
