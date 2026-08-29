@@ -215,12 +215,15 @@ export default function SignUp() {
         <div className="relative h-full w-full text-white ">
 
             {/* Step content */}
-            <div ref={contentRef} className=" flex-1 overflow-hidden">
+            <div ref={contentRef} className=" flex-1 flex flex-col h-full min-h-0 overflow-hidden">
                 <SignUpHeader>
+                    {(step == 2) && <div className="w-full h-full flex justify-end items-center text-end font-bold text-lg tracking-wide">
+                        GETTING READY
+                    </div>}
                 </SignUpHeader>
                 <FormProvider {...methods}>
                     <div
-                        className={`w-full transition-all duration-200 ease-in-out ${isAnimating
+                        className={`w-full flex flex-col transition-all flex-1 duration-200 ease-in-out ${isAnimating
                             ? direction === "forward"
                                 ? "translate-x-8 opacity-0"
                                 : "-translate-x-8 opacity-0"

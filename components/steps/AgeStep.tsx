@@ -155,11 +155,10 @@ export default function AgeStep({
   };
 
   return (
-    <div className="flex flex-col gap-4 mx-8 my-6">
-      <h2 className="text-2xl font-semibold">How old are you?</h2>
-      <p className="text-sm text-gray-500">
-        Select your date of birth to calculate your age. You must be at least 18
-        to create an account.
+    <div className="flex flex-col  mx-8 my-6">
+      <h2 className="text-2xl font-semibold mb-4">How many years have you been partying?</h2>
+      <p className="text-sm text-gray-500 mb-2">
+        AGE
       </p>
       <div className=" flex flex-col gap-2" ref={containerRef}>
         <button
@@ -204,7 +203,7 @@ export default function AgeStep({
             role="dialog"
             aria-label="Select your date of birth"
             aria-modal="true"
-            className={`absolute h-125 grid grid-rows-[1fr_auto] inset-x-0 bottom-0 rounded-t-2xl border-t border-blue-600  bg-black p-6 shadow-2xl transition-transform duration-200 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"
+            className={`absolute h-125 grid grid-rows-[1fr_auto] inset-x-0 bottom-0 rounded-t-2xl border-t border-white/10  bg-black p-6 shadow-2xl transition-transform duration-200 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"
               }`}
           >
             <div className="">

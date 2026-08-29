@@ -14,7 +14,7 @@ export default function StepNav({
   forwardLabel = "Next",
 }: StepNavProps) {
   return (
-    <div className="flex flex-col items-center justify-end gap-y-4 pb-4">
+    <div className="flex flex-col items-center justify-end gap-y-4 ">
       {onForward && <Button onClick={onForward} label={forwardLabel} />}
       {onBackward && (
         <Button variant="secondary" onClick={onBackward} label="Back" />

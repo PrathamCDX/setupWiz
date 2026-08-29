@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 
 import OtpInput from "@/components/ui/OtpInput";
 import StepNav from "@/components/steps/StepNav";
+import { SignupFormDataType } from "@/validations/SignUp.validation";
 
 type OtpStepProps = {
   onComplete?: () => void;
@@ -23,7 +24,7 @@ export default function OtpStep({
     watch,
     setValue,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<SignupFormDataType>();
 
   const otp = watch("otp");
   const firedRef = useRef(false);
@@ -38,16 +39,17 @@ export default function OtpStep({
 
   return (
     <div className="flex flex-col gap-4 mx-8 my-6">
-      <h2 className="text-2xl font-semibold">Verify your email</h2>
-      <p className="text-sm text-gray-500">
-        Enter the 6-digit code sent to your email.
-      </p>
+      <h2 className="text-xl font-semibold">ENTER OTP</h2>
+
       <div className="flex flex-col gap-1">
         <OtpInput
           value={otp ?? ""}
           error={showErrors && !!errors.otp}
           onChange={(v) => setValue("otp", v, { shouldValidate: true })}
         />
+        <div className="w-full font-light text-sm text-white/50 mt-2.5 text-end">
+          Resend OTP
+        </div>
         <p className="text-sm text-red-500 h-4 px-1">
           {showErrors && errors.otp &&
             errors.otp.message as string
@@ -55,6 +57,9 @@ export default function OtpStep({
         </p>
       </div>
       <StepNav onForward={onForward} onBackward={onBackward} />
+      <p className="text-sm text-gray-500">
+        A 6-digit otp has been sent to {watch('email')}
+      </p>
     </div>
   );
 }

@@ -26,9 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${geistMono.variable} h-full w-full antialiased`}
+      className={`${poppins.variable} ${geistMono.variable} h-full w-full overflow-hidden bg-black antialiased`}
     >
-      <body className="h-full w-full relative ">
+      <body className="h-full w-full relative overflow-hidden bg-black">
         <SlideComponent >
           {children}
         </SlideComponent>

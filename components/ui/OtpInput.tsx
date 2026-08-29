@@ -70,6 +70,7 @@ export default function OtpInput({ value, onChange, error }: OtpInputProps) {
             inputsRef.current[index] = el;
           }}
           type="text"
+          placeholder="."
           inputMode="numeric"
           autoComplete={index === 0 ? "one-time-code" : "off"}
           aria-label={`Digit ${index + 1}`}
@@ -78,7 +79,7 @@ export default function OtpInput({ value, onChange, error }: OtpInputProps) {
           onChange={(event) => handleChange(index, event)}
           onKeyDown={(event) => handleKeyDown(index, event)}
           onPaste={handlePaste}
-          className={`rounded-lg border placeholder:text-gray-100/20 px-2 sm:px-4 sm:py-3 py-1 text-center text-2xl font-mono outline-none transition-colors focus:border-gray-200/30 ${error ? "border-red-400" : "border-gray-100/20"
+          className={`rounded-t-lg rounded-b-none border-b-3 placeholder:text-white placeholder:font-bold px-2 sm:px-4 sm:py-3 py-1 text-center text-2xl font-mono outline-none transition-colors focus:border-gray-200/30 ${error ? "border-red-400" : "border-[#333333]"
             }`}
         />
       ))}

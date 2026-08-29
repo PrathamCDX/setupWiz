@@ -13,7 +13,7 @@ export default function SlideComponent({ children }: { children: React.ReactNode
     const map: Record<typeof pathName, { component: React.ReactNode; className: string }> = {
         '/signup': {
             component: <SignUp />,
-            className: "fixed w-full sm:w-4/10 h-full top-0 -right-full sm:-right-4/10 bg-black/99",
+            className: "fixed w-full sm:w-4/10 h-dvh sm:h-full top-0 bottom-0 -right-full sm:-right-4/10 bg-black/99",
         },
         '/': {
             component: null,
