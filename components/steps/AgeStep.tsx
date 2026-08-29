@@ -3,29 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-import Dropdown, { type DropdownOption } from "@/components/ui/Dropdown";
 import Button from "@/components/ui/Button";
 import StepNav from "@/components/steps/StepNav";
 import { calculateAge } from "@/components/SignUp";
 
 const DOB_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
-const MONTH_LABELS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const YEAR_RANGE = 120;
 
 type AgeStepProps = {
   showErrors?: boolean;
@@ -39,11 +21,9 @@ function parseDob(value: string | undefined): Date | undefined {
   return new Date(year, month - 1, day);
 }
 
-function daysInMonth(month: string, year: string): number {
+function daysInMonth(month: number, year: number): number {
   if (!month) return 31;
-  // Default to a leap year so February allows the 29th until a year is chosen
-  const y = year ? Number(year) : 2000;
-  return new Date(y, Number(month), 0).getDate();
+  return new Date(year, month, 0).getDate();
 }
 
 export default function AgeStep({
@@ -70,41 +50,17 @@ export default function AgeStep({
   const age = dob ? calculateAge(dob) : null;
 
   const currentYear = new Date().getFullYear();
+  const minYear = currentYear - 120;
 
-  const dayOptions: DropdownOption[] = Array.from(
-    { length: daysInMonth(month, year) },
-    (_, i) => ({ value: String(i + 1), label: String(i + 1) })
-  );
+  const monthNum = month ? Number(month) : 0;
+  const yearNum = year ? Number(year) : 0;
+  const maxDay = daysInMonth(monthNum, yearNum || currentYear);
 
-  const monthOptions: DropdownOption[] = MONTH_LABELS.map((label, i) => ({
-    value: String(i + 1),
-    label,
-  }));
-
-  const yearOptions: DropdownOption[] = Array.from(
-    { length: YEAR_RANGE + 1 },
-    (_, i) => {
-      const y = currentYear - i;
-      return { value: String(y), label: String(y) };
-    }
-  );
-
-  // Clamp the selected day when the month/year combination has fewer days
-  const handleMonthChange = (value: string) => {
-    setMonth(value);
-    const max = daysInMonth(value, year);
-    if (day !== "" && Number(day) > max) {
-      setDay(String(max));
-    }
-  };
-
-  const handleYearChange = (value: string) => {
-    setYear(value);
-    const max = daysInMonth(month, value);
-    if (day !== "" && Number(day) > max) {
-      setDay(String(max));
-    }
-  };
+  const isDayValid = day !== "" && Number(day) >= 1 && Number(day) <= maxDay;
+  const isMonthValid = month !== "" && Number(month) >= 1 && Number(month) <= 12;
+  const isYearValid =
+    year !== "" && Number(year) >= minYear && Number(year) <= currentYear;
+  const canContinue = isDayValid && isMonthValid && isYearValid;
 
   // Close on outside click / Escape
   useEffect(() => {
@@ -141,13 +97,11 @@ export default function AgeStep({
     setIsOpen(true);
   };
 
-  const canContinue = day !== "" && month !== "" && year !== "";
-
   const handleContinue = () => {
     if (!canContinue) return;
     setValue(
       "dob",
-      `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+      `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`
     );
     setValidatedOnce(true);
     void trigger("dob");
@@ -193,7 +147,6 @@ export default function AgeStep({
           className={`absolute overflow-y-hidden inset-0 z-10 transition-opacity duration-200 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           inert={!isOpen}
-        // style={isOpen ? { display: "block" } : { display: "none" }}
         >
           <div
             className="absolute inset-0 bg-black/10 backdrop-blur-md"
@@ -201,44 +154,76 @@ export default function AgeStep({
           />
           <div
             role="dialog"
-            aria-label="Select your date of birth"
+            aria-label="Enter your date of birth"
             aria-modal="true"
-            className={`absolute h-125 grid grid-rows-[1fr_auto] inset-x-0 bottom-0 rounded-t-2xl border-t border-white/10  bg-black p-6 shadow-2xl transition-transform duration-200 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"
+            className={`absolute h-125 grid grid-rows-[1fr_auto] inset-x-0 bottom-0 rounded-t-2xl border-t border-white/10 bg-black p-6 shadow-2xl transition-transform duration-200 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"
               }`}
           >
             <div className="">
               <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/20" />
               <p className="mb-4 text-sm font-medium text-white">
-                Select your date of birth
+                Enter your date of birth
               </p>
               <div className="grid grid-cols-3 gap-3">
-                <Dropdown
-                  variant="dark"
-                  openDirection="up"
-                  aria-label="Day"
-                  placeholder="Day"
-                  options={dayOptions}
-                  value={day}
-                  onChange={setDay}
-                />
-                <Dropdown
-                  variant="dark"
-                  openDirection="up"
-                  aria-label="Month"
-                  placeholder="Month"
-                  options={monthOptions}
-                  value={month}
-                  onChange={handleMonthChange}
-                />
-                <Dropdown
-                  variant="dark"
-                  openDirection="up"
-                  aria-label="Year"
-                  placeholder="Year"
-                  options={yearOptions}
-                  value={year}
-                  onChange={handleYearChange}
-                />
+                <div className="flex flex-col gap-1">
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={maxDay}
+                    placeholder="Day"
+                    aria-label="Day"
+                    value={day}
+                    onChange={(e) => setDay(e.target.value)}
+                    className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      isDayValid ? "border-white/20" : "border-red-400"
+                    }`}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={12}
+                    placeholder="Month"
+                    aria-label="Month"
+                    value={month}
+                    onChange={(e) => {
+                      const m = e.target.value;
+                      setMonth(m);
+                      const max = daysInMonth(m ? Number(m) : 0, yearNum || currentYear);
+                      if (day !== "" && Number(day) > max) {
+                        setDay(String(max));
+                      }
+                    }}
+                    className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      isMonthValid ? "border-white/20" : "border-red-400"
+                    }`}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={minYear}
+                    max={currentYear}
+                    placeholder="Year"
+                    aria-label="Year"
+                    value={year}
+                    onChange={(e) => {
+                      const y = e.target.value;
+                      setYear(y);
+                      const max = daysInMonth(monthNum, y ? Number(y) : 0);
+                      if (day !== "" && Number(day) > max) {
+                        setDay(String(max));
+                      }
+                    }}
+                    className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      isYearValid ? "border-white/20" : "border-red-400"
+                    }`}
+                  />
+                </div>
               </div>
             </div>
             <Button
