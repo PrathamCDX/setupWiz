@@ -31,7 +31,7 @@ export default function EmailStep({
         <input
           type="email"
           placeholder="EMAIL"
-          className={`w-full rounded-lg border placeholder:text-gray-100/20 px-4 py-3 text-base outline-none ${errors.email ? "border-red-400 focus:border-red-400" : "border-gray-100/20 focus:border-gray-200/30"
+          className={`w-full rounded-lg border placeholder:text-gray-100/20 px-4 py-3 text-base outline-none ${showErrors && errors.email ? "border-red-400 focus:border-red-400" : "border-gray-100/20 focus:border-gray-200/30"
             }`}
           {...register("email")}
         />
