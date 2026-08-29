@@ -16,12 +16,12 @@ const BASE_STYLES =
 
 const VARIANT_STYLES: Record<ButtonVariant, { enabled: string; disabled: string }> = {
   primary: {
-    enabled: "border-white/10 text-gray-800 hover:text-gray-200 bg-white hover:bg-white/10 hover:cursor-pointer",
-    disabled: "border-white/5 text-gray-500 cursor-not-allowed",
+    enabled: "border-white/10 transition-colors duration-300 text-gray-800 hover:text-gray-200 bg-white hover:bg-white/10 hover:cursor-pointer",
+    disabled: "border-white/5 text-gray-500 cursor-not-allowed transition-colors duration-300",
   },
   secondary: {
-    enabled: "border-white/10 text-white hover:text-gray-800 hover:bg-gray-100 hover:cursor-pointer",
-    disabled: "border-white/10 text-gray-300 cursor-not-allowed",
+    enabled: "border-white border-2 text-white transition-colors duration-300 hover:text-gray-200 hover:bg-white/20 hover:border-white/30 hover:cursor-pointer",
+    disabled: "border-white/10 text-gray-300 cursor-not-allowed transition-colors duration-300",
   },
   custom: {
     enabled: "",
@@ -53,7 +53,6 @@ export default function Button({
 
 export function LandingButtonSignUp() {
   const router = useRouter();
-
   return (
     <Button
       label="Continue"

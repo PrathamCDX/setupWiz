@@ -221,7 +221,7 @@ export default function SignUp() {
             {/* Step content */}
             <div ref={contentRef} className=" flex-1 flex flex-col h-full min-h-0 overflow-hidden">
                 <SignUpHeader>
-                    {(step == 2) && <div className="w-full h-full flex justify-end items-center text-end font-bold text-lg tracking-wide">
+                    {(step >= 2) && <div className="w-full h-full flex justify-end items-center text-end font-bold text-lg tracking-wide">
                         GETTING READY
                     </div>}
                 </SignUpHeader>

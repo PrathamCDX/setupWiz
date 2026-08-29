@@ -176,7 +176,7 @@ export default function AgeStep({
                       aria-label="Day"
                       value={day}
                       onChange={(e) => setDay(e.target.value)}
-                      className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isDayValid ? "border-white/20" : "border-red-400"
+                      className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${(day.length == 0 || isDayValid) ? "border-white/20" : "border-red-400"
                         }`}
                     />
                   </div>
@@ -197,7 +197,7 @@ export default function AgeStep({
                           setDay(String(max));
                         }
                       }}
-                      className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isMonthValid ? "border-white/20" : "border-red-400"
+                      className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${(month.length == 0 || isMonthValid) ? "border-white/20" : "border-red-400"
                         }`}
                     />
                   </div>
@@ -218,7 +218,7 @@ export default function AgeStep({
                           setDay(String(max));
                         }
                       }}
-                      className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${isYearValid ? "border-white/20" : "border-red-400"
+                      className={`w-full rounded-lg border bg-black px-4 py-3 text-base text-white outline-none transition-colors focus:border-gray-200/30 placeholder:text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${(year.length == 0 || isYearValid) ? "border-white/20" : "border-red-400"
                         }`}
                     />
                   </div>

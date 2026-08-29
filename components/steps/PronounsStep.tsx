@@ -173,7 +173,7 @@ export default function PronounsStep({
                           checked={isSelected}
                           aria-hidden="true"
                           className="appearance-none hover:cursor-pointer w-5 h-5 shrink-0 rounded border-2 border-white/20 bg-black checked:bg-white checked:border-white relative
-                            after:absolute after:left-0.5 after:-top-0.5 after:text-sm after:text-black after:hidden after:content-['✓'] checked:after:block"
+                            after:absolute after:left-0.5 after:-top-0.5 after:text-sm after:text-black after:hidden  checked:after:block"
                         />
                         <span className={isSelected ? "text-white" : "text-gray-400"}>
                           {option.label}
@@ -198,7 +198,7 @@ export default function PronounsStep({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-end gap-y-4">
+              <div className="flex flex-col items-center justify-end mt-4 gap-y-4">
                 <Button
                   variant="primary"
                   onClick={handleContinue}

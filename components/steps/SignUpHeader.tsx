@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function SignUpHeader({ children }: { children?: React.ReactNode }) {
     return (
         <div className="flex items-center mx-8 mt-6  justify-between">
-            <div className="h-16 rounded-3xl overflow-hidden">
+            <div className="h-16 w-16 rounded-3xl overflow-hidden">
                 <Image
                     src="/logo.png"
                     alt="Logo"
